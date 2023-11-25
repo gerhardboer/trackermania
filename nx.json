@@ -59,7 +59,6 @@
     },
     "@nx/angular:component": {
       "style": "scss",
-      "inlineStyle": true,
       "inlineTemplate": true,
       "skipTests": true
     },
