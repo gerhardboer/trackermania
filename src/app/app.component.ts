@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { MainComponent } from './main/main.component';
 
 @Component({
   standalone: true,
-  imports: [NxWelcomeComponent, RouterModule],
-  selector: 'trackermania-root',
+  imports: [RouterModule, MainComponent],
+  selector: 'trm-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
