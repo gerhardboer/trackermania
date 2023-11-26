@@ -1,9 +1,9 @@
 {
   "name": "trackermania",
-  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "trm",
-  "sourceRoot": "./src",
+  "sourceRoot": "apps/trackermania/src",
   "tags": [],
   "targets": {
     "build": {
@@ -11,13 +11,16 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/trackermania",
-        "index": "./src/index.html",
-        "browser": "./src/main.ts",
+        "index": "apps/trackermania/src/index.html",
+        "browser": "apps/trackermania/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "./tsconfig.app.json",
+        "tsConfig": "apps/trackermania/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["./src/favicon.ico", "./src/assets"],
-        "styles": ["./src/styles.scss"],
+        "assets": [
+          "apps/trackermania/src/favicon.ico",
+          "apps/trackermania/src/assets"
+        ],
+        "styles": ["apps/trackermania/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -66,14 +69,17 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["./src/**/*.ts", "./src/**/*.html"]
+        "lintFilePatterns": [
+          "apps/trackermania/src/**/*.ts",
+          "apps/trackermania/src/**/*.html"
+        ]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectName}"],
       "options": {
-        "jestConfig": "jest.config.ts"
+        "jestConfig": "apps/trackermania/jest.config.app.ts"
       }
     }
   }

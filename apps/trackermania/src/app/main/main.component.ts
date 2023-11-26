@@ -6,10 +6,7 @@ import { TierListComponent } from './tier-list.component';
   selector: 'trm-main',
   standalone: true,
   imports: [CommonModule, TierListComponent],
-  template: `
-    <p>main works!</p>
-    <trm-tier-list></trm-tier-list>
-  `,
+  template: ` <trm-tier-list></trm-tier-list> `,
   styles: ``,
 })
 export class MainComponent {}
