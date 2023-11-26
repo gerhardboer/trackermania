@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { tierListDefinition } from './tier-list-definition';
+import { tierColors, tierListDefinition } from './tier-list-definition';
 import { TrackmaniaService } from '../services/trackmania.service';
 
 interface Tier {
@@ -26,7 +26,7 @@ interface Tier {
       <div class="tier-item">
         <div
           class="tier-item__level"
-          [style.background-color]="tier.backgroundColor"
+          [style.background-color]="tierColors[tier.level]"
         >
           {{ tier.level }}
         </div>
@@ -41,7 +41,7 @@ interface Tier {
             [attr.tier]="tier.level"
             [src]="map?.thumbnail"
             draggable="true"
-            width="100"
+            height="100"
             (dragstart)="drag($event)"
           />
           }
@@ -55,7 +55,7 @@ interface Tier {
       <img
         [id]="map.name"
         [src]="map.thumbnail"
-        width="100"
+        height="100"
         draggable="true"
         (dragstart)="drag($event)"
       />
@@ -79,6 +79,8 @@ export class TierListComponent implements OnInit {
     const selectedMaps = this.selectedMaps();
     return campaignMaps.filter((map: any) => !selectedMaps.includes(map));
   });
+
+  tierColors = tierColors;
 
   private campaign$ = inject(TrackmaniaService).getCampaign();
 
