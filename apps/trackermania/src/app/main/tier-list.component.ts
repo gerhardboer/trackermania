@@ -37,7 +37,7 @@ interface Tier {
         >
           @for (map of tier.body; track map) {
           <img
-            [id]="map.name"
+            [id]="map.uid"
             [attr.tier]="tier.level"
             [src]="map?.thumbnail"
             draggable="true"
@@ -51,14 +51,11 @@ interface Tier {
     </div>
 
     <div class="tier-options">
-      @for (map of selectableMaps(); track map.name) {
-      <img
-        [id]="map.name"
-        [src]="map.thumbnail"
-        height="100"
-        draggable="true"
-        (dragstart)="drag($event)"
-      />
+      @for (map of selectableMaps(); track map.uid) {
+      <div class="tier-option">
+        [id]="map.uid" [src]="map.thumbnail" height="100" draggable="true"
+        (dragstart)="drag($event)" />
+      </div>
       }
     </div>
   `,
@@ -128,7 +125,7 @@ export class TierListComponent implements OnInit {
     if (!id) return console.error('data is null');
 
     // update tierList
-    const map = this.campaign().maps.find((map: any) => map.name === id);
+    const map = this.campaign().maps.find((map: any) => map.uid === id);
 
     this.tierList.update((tierList) => {
       const level =
@@ -152,7 +149,7 @@ export class TierListComponent implements OnInit {
         );
         if (sourceTier) {
           sourceTier.body = sourceTier.body.filter(
-            (map: any) => map.name !== id
+            (map: any) => map.uid !== id
           );
         }
       }
