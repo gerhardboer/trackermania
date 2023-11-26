@@ -53,8 +53,13 @@ interface Tier {
     <div class="tier-options">
       @for (map of selectableMaps(); track map.uid) {
       <div class="tier-option">
-        [id]="map.uid" [src]="map.thumbnail" height="100" draggable="true"
-        (dragstart)="drag($event)" />
+        <img
+          [id]="map.uid"
+          [src]="map.thumbnail"
+          height="100"
+          draggable="true"
+          (dragstart)="drag($event)"
+        />
       </div>
       }
     </div>
