@@ -89,12 +89,14 @@ export class TierListComponent implements OnInit {
   constructor() {
     effect(() => {
       const tierList = this.tierList();
-      localStorage.setItem('tierList', JSON.stringify(tierList));
+      const user = localStorage.getItem('user')!;
+      localStorage.setItem(user, JSON.stringify(tierList));
     });
   }
 
   ngOnInit() {
-    const storedTierList = localStorage.getItem('tierList');
+    const user = localStorage.getItem('user')!;
+    const storedTierList = localStorage.getItem(user);
     this.tierList.set(
       storedTierList ? JSON.parse(storedTierList) : tierListDefinition
     );
