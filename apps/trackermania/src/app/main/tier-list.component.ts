@@ -9,6 +9,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { tierColors, tierListDefinition } from './tier-list-definition';
 import { TrackmaniaService } from '../services/trackmania.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 
 interface Tier {
   level: string;
@@ -19,8 +21,16 @@ interface Tier {
 @Component({
   selector: 'trm-tier-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
+    <select ngModel (ngModelChange)="selectCampaign($event)">
+      <option value="">Select a campaign</option>
+      @for (campaign of campaigns(); track campaign) {
+      <option [ngValue]="campaign.id">{{ campaign.name }}</option>
+      }
+    </select>
+
+    @if (campaign()) {
     <div class="tier-list">
       @for (tier of tierList();track tier.level) {
       <div class="tier-item">
@@ -63,10 +73,13 @@ interface Tier {
       </div>
       }
     </div>
+    }
   `,
   styleUrl: './tier-list.component.scss',
 })
-export class TierListComponent implements OnInit {
+export class TierListComponent {
+  trackmaniaService = inject(TrackmaniaService);
+
   tierList = signal<Tier[]>([]);
   campaign = signal<any>(undefined);
   selectedMaps = computed(() =>
@@ -84,29 +97,34 @@ export class TierListComponent implements OnInit {
 
   tierColors = tierColors;
 
-  private campaign$ = inject(TrackmaniaService).getCampaign();
+  campaigns = toSignal(this.trackmaniaService.getCampaigns());
 
   constructor() {
     effect(() => {
       const tierList = this.tierList();
+      const campaign = this.campaign();
       const user = localStorage.getItem('user')!;
-      localStorage.setItem(user, JSON.stringify(tierList));
+
+      if (tierList && campaign) {
+        localStorage.setItem(
+          `${user}-${campaign.id}`,
+          JSON.stringify(tierList)
+        );
+      }
     });
   }
 
-  ngOnInit() {
-    const user = localStorage.getItem('user')!;
-    const storedTierList = localStorage.getItem(user);
-    this.tierList.set(
-      storedTierList ? JSON.parse(storedTierList) : tierListDefinition
-    );
-    this.getTracks();
-  }
-
-  getTracks() {
-    this.campaign$.subscribe((campain) => {
-      this.campaign.set(campain);
-    });
+  selectCampaign(campaignId: string) {
+    this.trackmaniaService
+      .getCampaign(campaignId)
+      .subscribe((campaign: any) => {
+        const user = localStorage.getItem('user')!;
+        const storedTierList = localStorage.getItem(`${user}-${campaign.id}`);
+        this.tierList.set(
+          storedTierList ? JSON.parse(storedTierList) : tierListDefinition
+        );
+        this.campaign.set(campaign);
+      });
   }
 
   drag(ev: DragEvent) {

@@ -14,7 +14,10 @@ const cache: any = {};
 
 app.get('/campaign', async (req, res) => {
   if (!cache.campaign) {
-    const campaign = await client.campaigns.currentSeason();
+    const campaign = req.params['id']
+      ? await client.campaigns.get(0, req.params['id'])
+      : await client.campaigns.currentSeason();
+
     const maps = await campaign.maps();
 
     cache.campaign = {
@@ -36,6 +39,18 @@ app.get('/campaign', async (req, res) => {
   }
 
   res.send(cache.campaign);
+});
+
+app.get('/campaigns', async (req, res) => {
+  if (!cache.campaigns) {
+    const campaigns = await client.campaigns.officialCampaigns();
+    cache.campaigns = campaigns.map((campaign) => ({
+      name: campaign.name,
+      id: campaign.id,
+    }));
+  }
+
+  res.send(cache.campaigns);
 });
 
 app.listen(port, host, () => {

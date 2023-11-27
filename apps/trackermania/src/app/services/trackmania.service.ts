@@ -10,7 +10,11 @@ export class TrackmaniaService {
 
   private httpClient = inject(HttpClient);
 
-  getCampaign(): Observable<any> {
-    return this.httpClient.get(this.url + 'campaign');
+  getCampaign(id: string): Observable<any> {
+    return this.httpClient.get(this.url + 'campaign', { params: { id } });
+  }
+
+  getCampaigns(): Observable<any> {
+    return this.httpClient.get(this.url + 'campaigns');
   }
 }
