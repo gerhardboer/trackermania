@@ -22,6 +22,7 @@ app.get('/campaign', async (req, res) => {
 
     cache.campaign = {
       campaign: campaign.name,
+      image: campaign.image,
       maps: maps.map((map) => ({
         name: map.name,
         author: map.authorName,
