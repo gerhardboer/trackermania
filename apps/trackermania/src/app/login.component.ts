@@ -38,6 +38,6 @@ export class LoginComponent {
 
   login(username: string) {
     localStorage.setItem('user', username);
-    this.router.navigate(['/tierlist']);
+    this.router.navigate(['/season']);
   }
 }

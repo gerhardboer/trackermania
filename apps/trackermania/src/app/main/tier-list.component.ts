@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { tierColors } from './tier-list-definition';
+import { tierColors, tierListDefinition } from './tier-list-definition';
 import { FormsModule } from '@angular/forms';
 import { SessionControl } from './session.control';
 
@@ -94,18 +94,18 @@ export class TierListComponent {
         );
       }
     });
+  }
 
-    effect(() => {
-      const campaign = this.session.campaign();
-      const user = localStorage.getItem('user')!;
+  ngOnInit() {
+    const campaign = this.session.campaign();
+    const user = localStorage.getItem('user')!;
 
-      if (!campaign) return;
+    if (!campaign) return;
 
-      const tierList = localStorage.getItem(`${user}-${campaign.id}`);
-      if (tierList) {
-        this.tierList.set(JSON.parse(tierList));
-      }
-    });
+    const storedTierList = localStorage.getItem(`${user}-${campaign.id}`);
+    this.tierList.set(
+      storedTierList ? JSON.parse(storedTierList) : tierListDefinition
+    );
   }
 
   drag(ev: DragEvent) {

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { MainComponent } from './main/main.component';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, MainComponent],
+  imports: [RouterModule],
   selector: 'trm-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TrackmaniaService } from '../services/trackmania.service';
 import { SessionControl } from './session.control';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'trm-season',
@@ -32,6 +33,7 @@ import { SessionControl } from './session.control';
 export class SeasonComponent {
   trackmaniaService = inject(TrackmaniaService);
   session = inject(SessionControl);
+  router = inject(Router);
 
   campaigns = toSignal(this.trackmaniaService.getCampaigns());
 
@@ -66,6 +68,7 @@ export class SeasonComponent {
       .getCampaign(campaignId)
       .subscribe((campaign: any) => {
         this.session.campaign.set(campaign);
+        this.router.navigate(['/tier-list']);
       });
   }
 }

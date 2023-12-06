@@ -16,8 +16,13 @@ export const appRoutes: Route[] = [
       ),
   },
   {
-    path: 'tierlist',
+    path: 'season',
     loadComponent: () =>
-      import('./main/main.component').then((m) => m.MainComponent),
+      import('./main/season.component').then((m) => m.SeasonComponent),
+  },
+  {
+    path: 'tier-list',
+    loadComponent: () =>
+      import('./main/tier-list.component').then((m) => m.TierListComponent),
   },
 ];
