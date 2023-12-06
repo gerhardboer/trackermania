@@ -1,9 +1,8 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { tierColors, tierListDefinition } from './tier-list-definition';
-import { TrackmaniaService } from '../services/trackmania.service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { tierColors } from './tier-list-definition';
 import { FormsModule } from '@angular/forms';
+import { SessionControl } from './session.control';
 
 interface Tier {
   level: string;
@@ -16,27 +15,7 @@ interface Tier {
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="campaigns">
-      @for (campaignsByYear of campaignsByYear(); track campaignsByYear.year) {
-      <div class="campaign-row">
-        <div class="year-container">
-          <div class="year">
-            <div>{{ campaignsByYear.year }}</div>
-          </div>
-        </div>
-
-        @for (season of campaignsByYear.seasons; track season) {
-        <div class="season-container">
-          <div class="season" (click)="selectCampaign(season.campaignId)">
-            {{ season.season }}
-          </div>
-        </div>
-        }
-      </div>
-      }
-    </div>
-
-    @if (campaign()) {
+    @if (session.campaign()) {
     <div class="tier-list">
       @for (tier of tierList();track tier.level) {
       <div class="tier-item">
@@ -84,10 +63,9 @@ interface Tier {
   styleUrl: './tier-list.component.scss',
 })
 export class TierListComponent {
-  trackmaniaService = inject(TrackmaniaService);
+  session = inject(SessionControl);
 
   tierList = signal<Tier[]>([]);
-  campaign = signal<any>(undefined);
   selectedMaps = computed(() =>
     this.tierList()
       .map((tier) => tier.body)
@@ -96,45 +74,17 @@ export class TierListComponent {
   );
 
   selectableMaps = computed(() => {
-    const campaignMaps = this.campaign()?.maps ?? [];
+    const campaignMaps = this.session.campaign()?.maps ?? [];
     const selectedMaps = this.selectedMaps();
     return campaignMaps.filter((map: any) => !selectedMaps.includes(map));
   });
 
   tierColors = tierColors;
 
-  campaigns = toSignal(this.trackmaniaService.getCampaigns());
-
-  campaignsByYear = computed(() => {
-    const campaigns = this.campaigns();
-
-    if (!campaigns) return [];
-
-    // campaigns look like this: ['fall 2022, 'spring 2022', 'fall 2021', 'spring 2021']
-    // i want to group them by year, so it looks like this:
-    // { 2022: ['fall 2022', 'spring 2022'], 2021: ['fall 2021', 'spring 2021'] }
-    const campaignsByYear: { year: number; seasons: any[] }[] = [];
-    campaigns.forEach((campaign: any) => {
-      const [season, year] = campaign.name.split(' ');
-      const existingCampaign = campaignsByYear.find(
-        (campaign) => campaign.year === year
-      );
-      if (existingCampaign) {
-        existingCampaign.seasons.push({ season, id: campaign.id });
-      } else {
-        campaignsByYear.push({
-          year,
-          seasons: [{ season, id: campaign.id }],
-        });
-      }
-    });
-    return campaignsByYear;
-  });
-
   constructor() {
     effect(() => {
       const tierList = this.tierList();
-      const campaign = this.campaign();
+      const campaign = this.session.campaign();
       const user = localStorage.getItem('user')!;
 
       if (tierList && campaign) {
@@ -144,19 +94,18 @@ export class TierListComponent {
         );
       }
     });
-  }
 
-  selectCampaign(campaignId: string) {
-    this.trackmaniaService
-      .getCampaign(campaignId)
-      .subscribe((campaign: any) => {
-        const user = localStorage.getItem('user')!;
-        const storedTierList = localStorage.getItem(`${user}-${campaign.id}`);
-        this.tierList.set(
-          storedTierList ? JSON.parse(storedTierList) : tierListDefinition
-        );
-        this.campaign.set(campaign);
-      });
+    effect(() => {
+      const campaign = this.session.campaign();
+      const user = localStorage.getItem('user')!;
+
+      if (!campaign) return;
+
+      const tierList = localStorage.getItem(`${user}-${campaign.id}`);
+      if (tierList) {
+        this.tierList.set(JSON.parse(tierList));
+      }
+    });
   }
 
   drag(ev: DragEvent) {
@@ -182,7 +131,7 @@ export class TierListComponent {
     if (!id) return console.error('data is null');
 
     // update tierList
-    const map = this.campaign().maps.find((map: any) => map.uid === id);
+    const map = this.session.campaign().maps.find((map: any) => map.uid === id);
 
     this.tierList.update((tierList) => {
       const level =
