@@ -1,5 +1,6 @@
 import { Route, Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { MainComponent } from './main/main.component';
 
 export const appRoutes: Route[] = [
   {
