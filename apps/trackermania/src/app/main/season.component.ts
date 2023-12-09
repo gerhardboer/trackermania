@@ -9,6 +9,7 @@ import { JsonPipe } from '@angular/common';
   selector: 'trm-season',
   template: `
     <div class="campaigns">
+      <div class="campaigns-bg"></div>
       @for (campaignsByYear of campaignsByYear();track campaignsByYear.year) {
       <div class="campaign-row">
         <div class="year-container">

@@ -1,24 +1,36 @@
-.campaigns {
-  transform: scale(1.5);
-  transform-origin: 55% 0;
+.campaigns-bg {
+  background: rgb(1, 203, 117);
+  background: linear-gradient(
+    67deg,
+    rgba(1, 203, 117, 1) 50%,
+    rgba(0, 64, 45, 1) 90%
+  );
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  padding: 15px 15px 10px 15px;
+  border-radius: 8px 6px 0 0;
+  margin-top: -15px;
 }
 
 .campaigns {
+  font-size: x-large;
+  transform: skew(-8deg);
+
   .campaign-row {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    height: 100px;
+    height: 125px;
 
     .season-container {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 10px;
-      transform: skew(-8deg);
 
       .season {
-        width: 146px; // magic number to match height of year
+        width: 177px; // magic number to match height of year
         cursor: pointer;
 
         position: relative;
@@ -48,15 +60,15 @@
   .year-container {
     display: flex;
     align-items: center;
-    transform: skew(-8deg);
-    width: 66px; // magic number to fit with season image
+    width: 80px; // magic number to fit with season image
   }
   .year {
+    color: rgba(1, 203, 117, 0.7);
     transform: rotate(270deg);
     padding: 5px 20px;
     border-radius: 8px 6px 0 0;
     letter-spacing: 0.1rem;
-    background: #369;
+    background: #00402d;
     font-style: italic;
     margin-top: -4px; // magic number to fit with season image
   }
