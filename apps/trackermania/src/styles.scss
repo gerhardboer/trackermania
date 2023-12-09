@@ -32,6 +32,7 @@ body {
 .content {
   transform: skew(-5deg);
   max-width: 80vw;
+  min-width: 50vw;
 
   .content-title {
     h1 {
