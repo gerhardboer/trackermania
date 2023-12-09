@@ -7,9 +7,9 @@ export const mainRoutes: Route[] = [
     redirectTo: 'tier-list',
   },
   {
-    path: 'season',
+    path: 'stats',
     loadComponent: () =>
-      import('./season.component').then((m) => m.SeasonComponent),
+      import('./stats.component').then((m) => m.StatsComponent),
   },
   {
     path: 'game-session',
