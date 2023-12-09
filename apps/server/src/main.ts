@@ -5,12 +5,22 @@ import { Client } from 'trackmania.io';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
+import { writeFileSync, readFileSync } from 'fs';
+
 const app = express();
 app.use(cors());
 
 const client = new Client();
 
-const cache: any = {};
+function readCacheFromFile() {
+  const file = readFileSync('./cache.json');
+  if (file) {
+    return JSON.parse(file.toString());
+  }
+  return {};
+}
+
+const cache: any = readCacheFromFile();
 
 app.get('/campaign', async (req, res) => {
   if (!cache.campaign) {
@@ -37,6 +47,8 @@ app.get('/campaign', async (req, res) => {
         submitter: map.submitter,
       })),
     };
+
+    writeFileSync('./cache.json', JSON.stringify(cache));
   }
 
   res.send(cache.campaign);
@@ -49,6 +61,8 @@ app.get('/campaigns', async (req, res) => {
       name: campaign.name,
       id: campaign.id,
     }));
+
+    writeFileSync('./cache.json', JSON.stringify(cache));
   }
 
   res.send(cache.campaigns);
