@@ -1,12 +1,9 @@
+.campaigns {
+  transform: scale(1.5);
+  transform-origin: 55% 0;
+}
 
 .campaigns {
-
-  transform: scale(1.75);
-  transform-origin: 55% 0;
-
-  padding-left: 10px;
-  margin: 40px 0;
-
   .campaign-row {
     display: flex;
     flex-direction: row;
@@ -41,12 +38,8 @@
 
           -webkit-text-stroke: 1px black;
           color: white;
-          text-shadow:
-                  3px 3px 0 #000,
-                  -1px -1px 0 #000,
-                  1px -1px 0 #000,
-                  -1px 1px 0 #000,
-                  1px 1px 0 #000;
+          text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000,
+            -1px 1px 0 #000, 1px 1px 0 #000;
         }
       }
     }
@@ -62,10 +55,9 @@
     transform: rotate(270deg);
     padding: 5px 20px;
     border-radius: 8px 6px 0 0;
-    letter-spacing: .1rem;
+    letter-spacing: 0.1rem;
     background: #369;
     font-style: italic;
-    margin-top: -4px;  // magic number to fit with season image
+    margin-top: -4px; // magic number to fit with season image
   }
-
 }
