@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +15,18 @@ export class TrackmaniaService {
   }
 
   getCampaigns(): Observable<any> {
-    return this.httpClient.get(this.url + 'campaigns');
+    return this.httpClient.get(this.url + 'campaigns').pipe(
+      map((campaigns: any) => {
+        return campaigns.map((campaign: any) => {
+          const [season, year] = campaign.name.split(' ');
+          return {
+            ...campaign,
+            season,
+            year,
+            image: `/assets/seasons/${season.toLowerCase()}.png`,
+          };
+        });
+      })
+    );
   }
 }
