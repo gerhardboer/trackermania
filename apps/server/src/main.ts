@@ -12,15 +12,11 @@ app.use(cors());
 
 const client = new Client();
 
-function readCacheFromFile() {
-  const file = readFileSync('./cache.json');
-  if (file) {
-    return JSON.parse(file.toString());
-  }
-  return {};
-}
+let cache: any = {};
 
-const cache: any = readCacheFromFile();
+app.get('/clear-cache', async (req, res) => {
+  cache = {};
+});
 
 app.get('/campaign', async (req, res) => {
   if (!cache.campaign) {
@@ -57,10 +53,16 @@ app.get('/campaign', async (req, res) => {
 app.get('/campaigns', async (req, res) => {
   if (!cache.campaigns) {
     const campaigns = await client.campaigns.officialCampaigns();
-    cache.campaigns = campaigns.map((campaign) => ({
-      name: campaign.name,
-      id: campaign.id,
-    }));
+    const response = [];
+    for (const campaign of campaigns) {
+      response.push({
+        name: campaign.name,
+        id: campaign.id,
+        image: (await campaign.getCampaign()).image,
+      });
+    }
+
+    cache.campaigns = response;
 
     writeFileSync('./cache.json', JSON.stringify(cache));
   }
