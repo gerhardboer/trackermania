@@ -4,7 +4,7 @@ export const mainRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'season',
+    redirectTo: 'tier-list',
   },
   {
     path: 'season',

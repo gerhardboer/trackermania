@@ -1,8 +1,8 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { tierColors, tierListDefinition } from './tier-list-definition';
 import { FormsModule } from '@angular/forms';
-import { SessionControl } from './session.control';
+import { SeasonComponent } from './season.component';
 
 interface Tier {
   level: string;
@@ -13,57 +13,68 @@ interface Tier {
 @Component({
   selector: 'trm-tier-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SeasonComponent],
   template: `
-    @if (session.campaign()) {
-    <div class="tier-list">
-      @for (tier of tierList();track tier.level) {
-      <div class="tier-item">
-        <div
-          class="tier-item__level"
-          [style.background-color]="tierColors[tier.level]"
-        >
-          {{ tier.level }}
-        </div>
-        <div
-          class="tier-item__body"
-          (drop)="drop($event)"
-          (dragover)="allowDrop($event)"
-        >
-          @for (map of tier.body; track map) {
-          <img
-            [id]="map.uid"
-            [attr.tier]="tier.level"
-            [src]="map?.thumbnail"
-            draggable="true"
-            height="100"
-            (dragstart)="drag($event)"
-          />
+    @if(!this.campaign()) {
+    <trm-season (campaignSelected)="setCampaign($event)"></trm-season>
+    } @else {
+
+    <section class="content">
+      <section class="content-title">
+        <h1>Tier list</h1>
+      </section>
+      <section class="content-body">
+        <div class="tier-list">
+          @for (tier of tierList();track tier.level) {
+          <div class="tier-item">
+            <div
+              class="tier-item__level"
+              [style.background-color]="tierColors[tier.level]"
+            >
+              {{ tier.level }}
+            </div>
+            <div
+              class="tier-item__body"
+              (drop)="drop($event)"
+              (dragover)="allowDrop($event)"
+            >
+              @for (map of tier.body; track map) {
+              <img
+                [id]="map.uid"
+                [attr.tier]="tier.level"
+                [src]="map?.thumbnail"
+                draggable="true"
+                height="100"
+                (dragstart)="drag($event)"
+              />
+              }
+            </div>
+          </div>
           }
         </div>
-      </div>
-      }
-    </div>
 
-    <div class="tier-options">
-      @for (map of selectableMaps(); track map.uid) {
-      <div class="tier-option">
-        <img
-          [id]="map.uid"
-          [src]="map.thumbnail"
-          height="100"
-          draggable="true"
-          (dragstart)="drag($event)"
-        />
-      </div>
-      }
-    </div>
+        <div class="tier-options">
+          @for (map of selectableMaps(); track map.uid) {
+          <div class="tier-option">
+            <img
+              [id]="map.uid"
+              [src]="map.thumbnail"
+              height="100"
+              draggable="true"
+              (dragstart)="drag($event)"
+            />
+          </div>
+          }
+        </div>
+      </section>
+    </section>
+
     }
   `,
   styleUrl: './tier-list.component.scss',
 })
 export class TierListComponent {
-  session = inject(SessionControl);
+  campaign = signal<any>(undefined);
 
   tierList = signal<Tier[]>([]);
   selectedMaps = computed(() =>
@@ -74,7 +85,7 @@ export class TierListComponent {
   );
 
   selectableMaps = computed(() => {
-    const campaignMaps = this.session.campaign()?.maps ?? [];
+    const campaignMaps = this.campaign()?.maps ?? [];
     const selectedMaps = this.selectedMaps();
     return campaignMaps.filter((map: any) => !selectedMaps.includes(map));
   });
@@ -84,7 +95,7 @@ export class TierListComponent {
   constructor() {
     effect(() => {
       const tierList = this.tierList();
-      const campaign = this.session.campaign();
+      const campaign = this.campaign();
       const user = localStorage.getItem('user')!;
 
       if (tierList && campaign) {
@@ -94,18 +105,6 @@ export class TierListComponent {
         );
       }
     });
-  }
-
-  ngOnInit() {
-    const campaign = this.session.campaign();
-    const user = localStorage.getItem('user')!;
-
-    if (!campaign) return;
-
-    const storedTierList = localStorage.getItem(`${user}-${campaign.id}`);
-    this.tierList.set(
-      storedTierList ? JSON.parse(storedTierList) : tierListDefinition
-    );
   }
 
   drag(ev: DragEvent) {
@@ -131,7 +130,7 @@ export class TierListComponent {
     if (!id) return console.error('data is null');
 
     // update tierList
-    const map = this.session.campaign().maps.find((map: any) => map.uid === id);
+    const map = this.campaign().maps.find((map: any) => map.uid === id);
 
     this.tierList.update((tierList) => {
       const level =
@@ -165,5 +164,19 @@ export class TierListComponent {
 
   allowDrop($event: DragEvent) {
     $event.preventDefault();
+  }
+
+  setCampaign($event: any) {
+    this.campaign.set($event);
+
+    if (!this.campaign()) return;
+    const user = localStorage.getItem('user')!;
+    const storedTierList = localStorage.getItem(
+      `${user}-${this.campaign().id}`
+    );
+
+    this.tierList.set(
+      storedTierList ? JSON.parse(storedTierList) : tierListDefinition
+    );
   }
 }

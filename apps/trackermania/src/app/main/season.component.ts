@@ -1,8 +1,12 @@
-import { Component, computed, inject } from '@angular/core';
+import {
+  Component,
+  computed,
+  EventEmitter,
+  inject,
+  Output,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TrackmaniaService } from '../services/trackmania.service';
-import { SessionControl } from './session.control';
-import { Router } from '@angular/router';
 import { JsonPipe } from '@angular/common';
 
 @Component({
@@ -41,17 +45,15 @@ import { JsonPipe } from '@angular/common';
   imports: [JsonPipe],
 })
 export class SeasonComponent {
+  @Output() campaignSelected = new EventEmitter<string>();
+
   trackmaniaService = inject(TrackmaniaService);
-  session = inject(SessionControl);
-  router = inject(Router);
 
   campaigns = toSignal(this.trackmaniaService.getCampaigns());
 
   campaignsByYear = computed(() => {
     const campaigns = this.campaigns();
-
     if (!campaigns) return [];
-
     return this.transformToCampaignsByYear(campaigns);
   });
 
@@ -59,8 +61,7 @@ export class SeasonComponent {
     this.trackmaniaService
       .getCampaign(campaignId)
       .subscribe((campaign: any) => {
-        this.session.campaign.set(campaign);
-        this.router.navigate(['/tier-list']);
+        this.campaignSelected.emit(campaign);
       });
   }
 
