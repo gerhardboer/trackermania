@@ -23,7 +23,7 @@ import { JsonPipe } from '@angular/common';
 
           <div class="season" (click)="selectCampaign(season.campaignId)">
             <img src="{{ season.image }}" alt="{{ season.name }}" />
-            <span class="season-name">{{ season.season }}</span>
+            <span class="season-name">{{ season.name }}</span>
           </div>
           }
         </div>
