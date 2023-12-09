@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
     <div class="login">
       <div class="login__container">
         <div class="login__form">
-          <h1>Login</h1>
+          <h1>Playername</h1>
           <div class="login__form__input">
             <input
               type="text"
-              placeholder="Username"
+              placeholder="player name"
               ngModel
               #username="ngModel"
             />
@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
               (click)="login(username.value)"
               [disabled]="!username.value"
             >
-              Login
+              Start
             </button>
           </div>
         </div>
