@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body{
+html,
+body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -8,7 +9,9 @@ html, body{
 }
 
 body {
-  background-color: rgba(0, 0, 0, 0.9);
+  //background-color: rgba(0, 0, 0, 0.9);
   font-family: 'Roboto', sans-serif;
   color: rgba(255, 255, 255, 0.9);
+  background: url('/assets/bg.png') no-repeat;
+  background-size: 100vw 100vh;
 }
