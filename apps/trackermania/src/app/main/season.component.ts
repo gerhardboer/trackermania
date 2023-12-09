@@ -8,28 +8,33 @@ import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'trm-season',
   template: `
-    <div class="campaigns content">
-      <div class="content-bg"></div>
-      @for (campaignsByYear of campaignsByYear();track campaignsByYear.year) {
-      <div class="campaign-row">
-        <div class="year-container">
-          <div class="year">
-            <div>{{ campaignsByYear.year }}</div>
-          </div>
-        </div>
+    <section class="content">
+      <section class="content-title">
+        <h1>Track browser</h1>
+        <div class="content-title__subtitle">select a track</div>
+      </section>
+      <section class="campaigns content-body">
+        @for (campaignsByYear of campaignsByYear();track campaignsByYear.year) {
+        <section class="campaign-row">
+          <section class="year-container">
+            <div class="year">
+              <div>{{ campaignsByYear.year }}</div>
+            </div>
+          </section>
 
-        <div class="season-container">
-          @for (season of campaignsByYear.seasons;track season) {
+          <section class="season-container">
+            @for (season of campaignsByYear.seasons;track season) {
 
-          <div class="season" (click)="selectCampaign(season.campaignId)">
-            <img src="{{ season.image }}" alt="{{ season.name }}" />
-            <span class="season-name">{{ season.name }}</span>
-          </div>
-          }
-        </div>
-      </div>
-      }
-    </div>
+            <div class="season" (click)="selectCampaign(season.campaignId)">
+              <img src="{{ season.image }}" alt="{{ season.name }}" />
+              <span class="season-name">{{ season.name }}</span>
+            </div>
+            }
+          </section>
+        </section>
+        }
+      </section>
+    </section>
   `,
   standalone: true,
   styleUrl: './season.component.scss',

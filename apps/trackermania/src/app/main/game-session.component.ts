@@ -4,8 +4,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'trm-game-session',
-  template: ` <div class="content">
-    <div class="content-bg"></div>
+  template: ` <div class="content-body">
+    <div class="content-body-bg"></div>
 
     <!--      select players -->
 
