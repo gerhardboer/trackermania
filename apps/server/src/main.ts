@@ -1,11 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import { Client } from 'trackmania.io';
+import { writeFileSync } from 'fs';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
-
-import { writeFileSync, readFileSync } from 'fs';
 
 const app = express();
 app.use(cors());
@@ -19,14 +18,16 @@ app.get('/clear-cache', async (req, res) => {
 });
 
 app.get('/campaign', async (req, res) => {
-  if (!cache.campaign) {
-    const campaign = req.params['id']
-      ? await client.campaigns.get(0, req.params['id'])
-      : await client.campaigns.currentSeason();
+  const queriedId = req.query.id as string;
+  const campaign = queriedId
+    ? await client.campaigns.get(0, parseInt(queriedId))
+    : await client.campaigns.currentSeason();
 
+  if (!cache.campaign) cache.campaign = {};
+  if (!cache.campaign[campaign.id]) {
     const maps = await campaign.maps();
 
-    cache.campaign = {
+    cache.campaign[campaign.id] = {
       campaign: campaign.name,
       image: campaign.image,
       maps: maps.map((map) => ({
@@ -47,7 +48,7 @@ app.get('/campaign', async (req, res) => {
     writeFileSync('./cache.json', JSON.stringify(cache));
   }
 
-  res.send(cache.campaign);
+  res.send(cache.campaign[campaign.id]);
 });
 
 app.get('/campaigns', async (req, res) => {
