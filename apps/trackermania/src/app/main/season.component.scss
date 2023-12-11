@@ -10,12 +10,14 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
+      overflow: scroll;
 
       .season {
         width: 177px; // magic number to match height of year
         cursor: pointer;
 
         position: relative;
+        white-space: nowrap;
 
         img {
           width: 100%;

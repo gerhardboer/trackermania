@@ -1,0 +1,24 @@
+.stat-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+
+  .stat-row__image {
+    img {
+      width: 50px;
+      border-radius: 5px;
+    }
+  }
+
+  .stats-info {
+    gap: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .stat-row__map-name {
+  }
+}
