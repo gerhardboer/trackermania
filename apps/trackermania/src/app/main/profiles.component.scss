@@ -1,0 +1,52 @@
+.content-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.profile {
+  border-radius: 5px;
+  background: rgb(1, 101, 143, 0.9);
+  background: linear-gradient(
+    180deg,
+    rgba(1, 101, 143, 0.9) 0%,
+    rgba(1, 49, 102, 1) 100%
+  );
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  max-width: 200px;
+  overflow: auto;
+
+  .profile__image {
+    flex-basis: 75%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+  }
+
+  .profile__name {
+    padding-bottom: 15px;
+  }
+}
+
+.add-player {
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+
+  img {
+    max-width: 100px;
+  }
+}

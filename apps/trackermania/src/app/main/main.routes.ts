@@ -12,6 +12,11 @@ export const mainRoutes: Route[] = [
       import('./stats.component').then((m) => m.StatsComponent),
   },
   {
+    path: 'players',
+    loadComponent: () =>
+      import('./profiles.component').then((m) => m.ProfilesComponent),
+  },
+  {
     path: 'game-session',
     loadComponent: () =>
       import('./game-session.component').then((m) => m.GameSessionComponent),

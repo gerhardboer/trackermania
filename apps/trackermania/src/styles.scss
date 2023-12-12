@@ -37,6 +37,9 @@ body {
   .content-title {
     h1 {
       font-size: x-large;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
     }
     text-transform: uppercase;
     border-radius: 8px 6px 0 0;
@@ -59,5 +62,24 @@ body {
       rgba(0, 64, 45, 1) 90%
     );
     padding: 15px 45px 10px 15px;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+
+  label {
+    margin-right: 1rem;
   }
 }
