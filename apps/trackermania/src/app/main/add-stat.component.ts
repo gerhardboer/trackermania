@@ -77,7 +77,7 @@ import { MapNumberPipe } from './map-number.pipe';
 
       <section class="dialog__footer">
         <button class="button" (click)="closeDialog.emit()">close</button>
-        <button class="button" (click)="saveTime()">Add</button>
+        <button class="button" (click)="saveTime()">Save</button>
       </section>
     </section>
   `,
