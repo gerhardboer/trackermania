@@ -9,7 +9,7 @@ export const mainRoutes: Route[] = [
   {
     path: 'stats',
     loadComponent: () =>
-      import('./stats.component').then((m) => m.StatsComponent),
+      import('./times.component').then((m) => m.TimesComponent),
   },
   {
     path: 'players',

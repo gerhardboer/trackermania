@@ -5,7 +5,7 @@ import { AddStatComponent } from './add-stat.component';
 import { TimePipe } from './time.pipe';
 
 @Component({
-  selector: 'trm-stats',
+  selector: 'trm-times',
   template: `
     <section class="content">
       <section class="content-title">
@@ -27,7 +27,7 @@ import { TimePipe } from './time.pipe';
         <!--        color dot - map name - season  small font -->
         <!--        time: big       -->
         <!--        history? -->
-        @for (stat of stats$(); track stat) {
+        @for (stat of times$(); track stat) {
         <div class="stat-row">
           <div class="stats-info">
             <div class="stat-row__image">
@@ -53,14 +53,14 @@ import { TimePipe } from './time.pipe';
     </dialog>
   `,
   standalone: true,
-  styleUrl: './stats.component.scss',
+  styleUrl: './times.component.scss',
   imports: [JsonPipe, FormsModule, AddStatComponent, TimePipe],
 })
-export class StatsComponent {
-  stats$ = signal<any[]>([]);
+export class TimesComponent {
+  times$ = signal<any[]>([]);
 
   constructor() {
-    this.stats$.set([
+    this.times$.set([
       {
         campaign: {
           name: 'Spring 2023',
@@ -122,7 +122,7 @@ export class StatsComponent {
     nweStat: { campaign: any; map: any; time: string },
     dialogElement: HTMLDialogElement
   ) {
-    this.stats$.update((stats) => {
+    this.times$.update((stats) => {
       return [...stats, nweStat];
     });
 
