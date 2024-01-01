@@ -3,6 +3,8 @@ import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AddStatComponent } from './add-stat.component';
 import { TimePipe } from './time.pipe';
+import { MapNumberPipe } from './map-number.pipe';
+import { Campaign, Map, Time } from '../types';
 
 @Component({
   selector: 'trm-times',
@@ -33,19 +35,20 @@ import { TimePipe } from './time.pipe';
         <!--        time: big       -->
         <!--        history? -->
         @for (stat of times$(); track stat) {
-        <div class="stat-row">
+        <section class="stat-row">
+          <header>
+            {{ stat.name }}
+          </header>
+          @for (map of stat.maps; track map) {
           <div class="stats-info">
-            <div class="stat-row__image hidden-sm">
-              <img src="{{ stat.map.thumbnail }}" alt="{{ stat.map.name }}" />
+            <div class="stat-row__map-name">
+              {{ map.name | trmMapNumber }}
             </div>
 
-            <div class="stat-row__color-dot"></div>
-            <div class="stat-row__map-name">
-              {{ stat.map.name }}
-            </div>
+            <div class="stat-row__time">{{ map.time | time }}</div>
           </div>
-          <div class="stat-row__time">{{ stat.time | time }}</div>
-        </div>
+          }
+        </section>
         }
       </section>
     </section>
@@ -59,85 +62,76 @@ import { TimePipe } from './time.pipe';
   `,
   standalone: true,
   styleUrl: './times.component.scss',
-  imports: [JsonPipe, FormsModule, AddStatComponent, TimePipe],
+  imports: [JsonPipe, FormsModule, AddStatComponent, TimePipe, MapNumberPipe],
 })
 export class TimesComponent {
-  times$ = signal<any[]>([]);
+  times$ = signal<Campaign[]>([]);
 
   constructor() {
     this.times$.set([
       {
-        campaign: {
-          name: 'Spring 2023',
-          id: 38563,
-          image: '/assets/seasons/spring.png',
-          season: 'Spring',
-          year: '2023',
-        },
-        map: {
-          name: 'Spring 2023 - 04',
-          author: 'Nadeo',
-          url: 'https://core.trackmania.nadeo.live/storageObjects/7feb0c6c-bbc5-4fc8-b5b4-713b423de1f9',
-          thumbnail:
-            'https://core.trackmania.nadeo.live/storageObjects/b1f77f37-e855-4e12-a3bd-13731c3163e8.jpg',
-          uploaded: '2023-03-23T11:12:13.000Z',
-          storageId: 'b1f77f37-e855-4e12-a3bd-13731c3163e8',
-          uid: 'GYC5gFrd3TvWuyHRWe37ManmC76',
-          fileName: 'Spring 2023 - 04.Map.Gbx',
-          submitterName: 'Nadeo',
-        },
-        time: {
-          h: 1,
-          mm: 1,
-          ss: 1,
-          SSS: 1,
-        },
-      },
-      {
-        campaign: {
-          name: 'Spring 2023',
-          id: 38563,
-          image: '/assets/seasons/spring.png',
-          season: 'Spring',
-          year: '2023',
-        },
-        map: {
-          name: 'Spring 2023 - 04',
-          author: 'Nadeo',
-          url: 'https://core.trackmania.nadeo.live/storageObjects/7feb0c6c-bbc5-4fc8-b5b4-713b423de1f9',
-          thumbnail:
-            'https://core.trackmania.nadeo.live/storageObjects/b1f77f37-e855-4e12-a3bd-13731c3163e8.jpg',
-          uploaded: '2023-03-23T11:12:13.000Z',
-          storageId: 'b1f77f37-e855-4e12-a3bd-13731c3163e8',
-          uid: 'GYC5gFrd3TvWuyHRWe37ManmC76',
-          fileName: 'Spring 2023 - 04.Map.Gbx',
-          submitterName: 'Nadeo',
-        },
-        time: {
-          h: 1,
-          mm: 1,
-          ss: 1,
-          SSS: 1,
-        },
+        name: 'Spring 2023',
+        id: 38563,
+        image: '/assets/seasons/spring.png',
+        season: 'Spring',
+        year: '2023',
+        maps: [
+          {
+            name: 'Spring 2023 - 04',
+            author: 'Nadeo',
+            url: 'https://core.trackmania.nadeo.live/storageObjects/7feb0c6c-bbc5-4fc8-b5b4-713b423de1f9',
+            thumbnail:
+              'https://core.trackmania.nadeo.live/storageObjects/b1f77f37-e855-4e12-a3bd-13731c3163e8.jpg',
+            uploaded: '2023-03-23T11:12:13.000Z',
+            storageId: 'b1f77f37-e855-4e12-a3bd-13731c3163e8',
+            uid: 'GYC5gFrd3TvWuyHRWe37ManmC76',
+            fileName: 'Spring 2023 - 04.Map.Gbx',
+            submitterName: 'Nadeo',
+            time: {
+              h: 1,
+              mm: 1,
+              ss: 1,
+              SSS: 1,
+            },
+          },
+        ],
       },
     ]);
   }
 
   saveStat(
-    nweStat: {
-      campaign: any;
-      map: any;
-      time: {
-        h: number;
-        mm: number;
-        ss: number;
-        SSS: number;
-      };
+    newStat: {
+      campaign: Campaign;
+      map: Map;
+      time: Time;
     },
     dialogElement: HTMLDialogElement
   ) {
     this.times$.update((stats) => {
-      return [...stats, nweStat];
+      const campaign = stats.find((stat) => stat.id === newStat.campaign.id);
+      if (campaign) {
+        const map = campaign.maps.find((map) => map.name === newStat.map.name);
+        if (map) {
+          map.time = newStat.time;
+        } else {
+          campaign.maps.push({
+            ...newStat.map,
+            time: newStat.time,
+          });
+        }
+      } else {
+        stats.push({
+          ...newStat.campaign,
+          maps: [
+            {
+              ...newStat.map,
+              time: newStat.time,
+            },
+          ],
+        });
+      }
+
+      return stats;
     });
 
     this.close(dialogElement);
