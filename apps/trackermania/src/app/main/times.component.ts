@@ -124,7 +124,16 @@ export class TimesComponent {
   }
 
   saveStat(
-    nweStat: { campaign: any; map: any; time: string },
+    nweStat: {
+      campaign: any;
+      map: any;
+      time: {
+        h: number;
+        mm: number;
+        ss: number;
+        SSS: number;
+      };
+    },
     dialogElement: HTMLDialogElement
   ) {
     this.times$.update((stats) => {

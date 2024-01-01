@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { TrackmaniaService } from '../services/trackmania.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { MapNumberPipe } from './map-number.pipe';
 
 @Component({
   selector: 'trm-add-stat',
@@ -30,7 +31,7 @@ import { FormsModule } from '@angular/forms';
           <label for="map">Map</label>
           <select [(ngModel)]="map" id="map">
             @for (map of maps$();track map) {
-            <option [ngValue]="map">{{ map.name }}</option>
+            <option [ngValue]="map">{{ map.name | trmMapNumber }}</option>
             }
           </select>
         </div>
@@ -73,11 +74,11 @@ import { FormsModule } from '@angular/forms';
         </div>
       </section>
 
-      <button (click)="saveTime()" [disabled]="!campaign || !map">Add</button>
+      <button (click)="saveTime()">Add</button>
     </section>
   `,
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, MapNumberPipe],
   styleUrl: './add-stat.component.scss',
 })
 export class AddStatComponent {
@@ -85,7 +86,12 @@ export class AddStatComponent {
   @Output() newStat = new EventEmitter<{
     campaign: any;
     map: any;
-    time: any;
+    time: {
+      h: number;
+      mm: number;
+      ss: number;
+      SSS: number;
+    };
   }>();
 
   trackmaniaService = inject(TrackmaniaService);
@@ -109,15 +115,28 @@ export class AddStatComponent {
   }
 
   saveTime() {
-    this.newStat.emit({
-      campaign: this.campaign,
-      map: this.map,
-      time: {
-        h: this.hh,
-        mm: this.mm,
-        ss: this.ss,
-        SSS: this.SSS,
-      },
-    });
+    if (
+      this.campaign &&
+      this.map &&
+      (this.hh || this.mm || this.ss || this.SSS)
+    ) {
+      this.newStat.emit({
+        campaign: this.campaign,
+        map: this.map,
+        time: {
+          h: this.hh ? parseInt(this.hh) : 0,
+          mm: this.mm ? parseInt(this.mm) : 0,
+          ss: this.ss ? parseInt(this.ss) : 0,
+          SSS: this.SSS ? parseInt(this.SSS) : 0,
+        },
+      });
+
+      this.map = null;
+      this.campaign = null;
+      this.hh = '';
+      this.mm = '';
+      this.ss = '';
+      this.SSS = '';
+    }
   }
 }
