@@ -38,7 +38,26 @@ body {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
+      .add-button {
+        background-color: rgba(1, 203, 117, 0.9);
+        border: 0;
+        border-radius: 5px;
+        color: rgba(0, 0, 0, 0.5);
+        font-style: italic;
+        font-weight: bold;
+        font-size: large;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          background-color: rgba(1, 203, 117, 1);
+        }
+      }
     }
+
     text-transform: uppercase;
     border-radius: 8px 6px 0 0;
     background: rgb(1, 101, 143, 0.9);
@@ -47,7 +66,7 @@ body {
       rgba(1, 101, 143, 0.9) 0%,
       rgba(1, 49, 102, 1) 100%
     );
-    padding: 8px 24px 6px 8px;
+    padding: 12px 12px;
   }
 
   .content-body {
