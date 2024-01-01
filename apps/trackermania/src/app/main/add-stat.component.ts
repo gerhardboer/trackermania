@@ -10,12 +10,12 @@ import { MapNumberPipe } from './map-number.pipe';
     <section class="dialog">
       <header>
         <span>Add time</span>
-        <button class="header-button" (click)="closeDialog.emit()">X</button>
       </header>
 
       <section class="dialog__body">
         <div class="form-row">
           <label for="campaign">Campaign</label>
+
           <select
             [(ngModel)]="campaign"
             (ngModelChange)="getMaps($event)"
@@ -29,6 +29,7 @@ import { MapNumberPipe } from './map-number.pipe';
 
         <div class="form-row">
           <label for="map">Map</label>
+
           <select [(ngModel)]="map" id="map">
             @for (map of maps$();track map) {
             <option [ngValue]="map">{{ map.name | trmMapNumber }}</option>
@@ -74,7 +75,10 @@ import { MapNumberPipe } from './map-number.pipe';
         </div>
       </section>
 
-      <button (click)="saveTime()">Add</button>
+      <section class="dialog__footer">
+        <button class="button" (click)="closeDialog.emit()">close</button>
+        <button class="button" (click)="saveTime()">Add</button>
+      </section>
     </section>
   `,
   standalone: true,

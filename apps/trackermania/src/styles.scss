@@ -118,9 +118,18 @@ dialog {
       justify-content: space-between;
     }
 
-    .dialog-body {
+    .dialog__body {
       display: flex;
-      padding: 12px;
+      flex-direction: column;
+    }
+
+    .dialog__footer {
+      display: flex;
+      gap: 12px;
+
+      :first-child {
+        margin-left: auto;
+      }
     }
   }
 }
