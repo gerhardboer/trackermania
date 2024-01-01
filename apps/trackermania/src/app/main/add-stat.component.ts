@@ -6,70 +6,72 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'trm-add-stat',
   template: `
-    <section class="add-stat">
-      <div class="add-stat__title">
-        <h2>Add time</h2>
-        <button class="close-button" (click)="closeDialog.emit()">X</button>
-      </div>
+    <section class="dialog">
+      <header>
+        <span>Add time</span>
+        <button class="header-button" (click)="closeDialog.emit()">X</button>
+      </header>
 
-      <div class="form-row">
-        <label for="campaign">Campaign</label>
-        <select
-          [(ngModel)]="campaign"
-          (ngModelChange)="getMaps($event)"
-          id="campaign"
-        >
-          @for (campaign of campaigns$();track campaign) {
-          <option [ngValue]="campaign">{{ campaign.name }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="form-row">
-        <label for="map">Map</label>
-        <select [(ngModel)]="map" id="map">
-          @for (map of maps$();track map) {
-          <option [ngValue]="map">{{ map.name }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="form-row time">
-        <label for="time">Time</label>
-        <div class="time-input">
-          <input
-            type="text"
-            inputmode="numeric"
-            pattern="\\d*"
-            placeholder="h"
-            [(ngModel)]="hh"
-          />
-          :
-          <input
-            type="text"
-            inputmode="numeric"
-            pattern="\\d*"
-            placeholder="m"
-            [(ngModel)]="mm"
-          />
-          :
-          <input
-            type="text"
-            inputmode="numeric"
-            pattern="\\d*"
-            placeholder="s"
-            [(ngModel)]="ss"
-          />
-          .
-          <input
-            type="text"
-            inputmode="numeric"
-            pattern="\\d*"
-            placeholder="ms"
-            [(ngModel)]="SSS"
-          />
+      <section class="dialog__body">
+        <div class="form-row">
+          <label for="campaign">Campaign</label>
+          <select
+            [(ngModel)]="campaign"
+            (ngModelChange)="getMaps($event)"
+            id="campaign"
+          >
+            @for (campaign of campaigns$();track campaign) {
+            <option [ngValue]="campaign">{{ campaign.name }}</option>
+            }
+          </select>
         </div>
-      </div>
+
+        <div class="form-row">
+          <label for="map">Map</label>
+          <select [(ngModel)]="map" id="map">
+            @for (map of maps$();track map) {
+            <option [ngValue]="map">{{ map.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-row time">
+          <label for="time">Time</label>
+          <div class="time-input">
+            <input
+              type="text"
+              inputmode="numeric"
+              pattern="\\d*"
+              placeholder="h"
+              [(ngModel)]="hh"
+            />
+            :
+            <input
+              type="text"
+              inputmode="numeric"
+              pattern="\\d*"
+              placeholder="m"
+              [(ngModel)]="mm"
+            />
+            :
+            <input
+              type="text"
+              inputmode="numeric"
+              pattern="\\d*"
+              placeholder="s"
+              [(ngModel)]="ss"
+            />
+            .
+            <input
+              type="text"
+              inputmode="numeric"
+              pattern="\\d*"
+              placeholder="ms"
+              [(ngModel)]="SSS"
+            />
+          </div>
+        </div>
+      </section>
 
       <button (click)="saveTime()" [disabled]="!campaign || !map">Add</button>
     </section>
