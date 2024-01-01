@@ -9,11 +9,13 @@ import { TimePipe } from './time.pipe';
   template: `
     <section class="content">
       <section class="content-title">
-        <h1>Stats</h1>
-        <div class="content-title__subtitle"></div>
-        <button class="add-button" (click)="dialogElement.showModal()">
-          +
-        </button>
+        <h1>
+          <span>Times</span>
+          <button class="add-button" (click)="dialogElement.showModal()">
+            +
+          </button>
+        </h1>
+
         <!--        menu    -->
         <!--        times, sorted by latest added     -->
         <!--        has some filters -->
