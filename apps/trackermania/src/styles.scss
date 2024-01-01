@@ -30,9 +30,7 @@ body {
 }
 
 .content {
-  transform: skew(-5deg);
-  max-width: 80vw;
-  min-width: 50vw;
+  min-width: 90vw;
 
   .content-title {
     h1 {
@@ -49,19 +47,17 @@ body {
       rgba(1, 101, 143, 0.9) 0%,
       rgba(1, 49, 102, 1) 100%
     );
-    padding: 30px 15px 30px 45px;
+    padding: 8px 24px 6px 8px;
   }
 
   .content-body {
-    font-size: x-large;
-
     background: rgb(1, 203, 117);
     background: linear-gradient(
       67deg,
       rgba(1, 203, 117, 1) 50%,
       rgba(0, 64, 45, 1) 90%
     );
-    padding: 15px 45px 10px 15px;
+    padding: 16px 8px 16px 0px;
   }
 }
 
@@ -81,5 +77,31 @@ body {
 
   label {
     margin-right: 1rem;
+  }
+}
+
+// for mobile
+@media screen and (max-width: 768px) {
+  .hidden-sm {
+    display: none;
+  }
+}
+
+// for desktop
+@media screen and (min-width: 768px) {
+  .content {
+    max-width: 80vw;
+    min-width: 75vw;
+
+    transform: skew(-5deg);
+
+    .content-body {
+      font-size: x-large;
+      padding: 32px 16px 32px 48px;
+    }
+
+    .content-title {
+      padding: 16px 48px 12px 16px;
+    }
   }
 }

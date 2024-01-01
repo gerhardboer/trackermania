@@ -30,7 +30,7 @@ import { TimePipe } from './time.pipe';
         @for (stat of times$(); track stat) {
         <div class="stat-row">
           <div class="stats-info">
-            <div class="stat-row__image">
+            <div class="stat-row__image hidden-sm">
               <img src="{{ stat.map.thumbnail }}" alt="{{ stat.map.name }}" />
             </div>
 
