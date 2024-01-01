@@ -12,7 +12,7 @@ import { TimePipe } from './time.pipe';
         <header>
           <span>Times</span>
           <button
-            class="header-button content-title__header-button"
+            class="button header-button content-title__header-button"
             (click)="dialogElement.showModal()"
           >
             +

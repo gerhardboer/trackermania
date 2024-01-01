@@ -11,7 +11,7 @@ import { ProfileColorDirective } from './profile-color.directive';
         <header>
           <span>Players</span>
           <button
-            class="header-button content-title__header-button"
+            class="button header-button content-title__header-button"
             (click)="addPlayer.showModal()"
           >
             +
