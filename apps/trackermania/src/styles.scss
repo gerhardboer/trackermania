@@ -29,6 +29,15 @@ body {
   background-size: 100vw 100vh;
 }
 
+.header-button {
+  border: 0;
+  border-radius: 5px;
+  font-style: italic;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
 .content {
   min-width: 90vw;
 
@@ -44,22 +53,15 @@ body {
       flex-direction: row;
       justify-content: space-between;
 
-      .header-button {
+      .content-title__header-button {
         background-color: rgba(1, 203, 117, 0.9);
-        border: 0;
-        border-radius: 5px;
         color: rgba(255, 255, 255, 0.8);
-        font-style: italic;
-        font-weight: bold;
-        font-size: large;
-        width: 30px;
-        height: 30px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-
         &:hover {
           background-color: rgba(1, 203, 117, 1);
         }
+        font-size: large;
+        width: 30px;
+        height: 30px;
       }
     }
 

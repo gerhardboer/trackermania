@@ -11,7 +11,10 @@ import { TimePipe } from './time.pipe';
       <section class="content-title">
         <header>
           <span>Times</span>
-          <button class="header-button" (click)="dialogElement.showModal()">
+          <button
+            class="header-button content-title__header-button"
+            (click)="dialogElement.showModal()"
+          >
             +
           </button>
         </header>

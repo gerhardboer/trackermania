@@ -10,7 +10,10 @@ import { ProfileColorDirective } from './profile-color.directive';
       <section class="content-title">
         <header>
           <span>Players</span>
-          <button class="header-button" (click)="addPlayer.showModal()">
+          <button
+            class="header-button content-title__header-button"
+            (click)="addPlayer.showModal()"
+          >
             +
           </button>
         </header>
