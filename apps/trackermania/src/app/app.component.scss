@@ -1,17 +1,11 @@
 .app {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: space-between;
   height: 100%;
 
   main {
     flex-basis: 90%;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .app {
-    flex-direction: column-reverse;
   }
 }
 
@@ -60,8 +54,18 @@ nav {
 
 main {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   margin-top: 30px;
   height: calc(100% - 120px); // height of navbar + margin
+}
+
+@media screen and (min-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  main {
+    flex-direction: column;
+  }
 }
