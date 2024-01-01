@@ -4,10 +4,10 @@ export const mainRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'tier-list',
+    redirectTo: 'times',
   },
   {
-    path: 'stats',
+    path: 'times',
     loadComponent: () =>
       import('./times.component').then((m) => m.TimesComponent),
   },
