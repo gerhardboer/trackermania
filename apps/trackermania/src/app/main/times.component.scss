@@ -1,13 +1,12 @@
 .stat-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 10px;
-  justify-content: space-between;
   align-items: center;
 
   .stat-row__image {
     img {
-      width: 50px;
+      width: 30px;
       border-radius: 5px;
     }
   }
@@ -15,8 +14,10 @@
   .stats-info {
     gap: 15px;
     display: flex;
+    width: 75%;
     flex-direction: row;
     align-items: center;
+    justify-content: space-around;
   }
 
   .stat-row__map-name {
