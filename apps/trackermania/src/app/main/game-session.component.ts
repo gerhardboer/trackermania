@@ -7,7 +7,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   template: `
     <section class="content">
       <section class="content-title">
-        <h1>Player browser</h1>
+        <header>Player browser</header>
         <div class="content-title__subtitle">Who is playing?</div>
       </section>
       <section class="players content-body"></section>

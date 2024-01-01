@@ -37,13 +37,14 @@ body {
   place-self: flex-end;
 
   .content-title {
-    h1 {
+    header {
       font-size: x-large;
+      font-weight: bolder;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
 
-      .add-button {
+      .header-button {
         background-color: rgba(1, 203, 117, 0.9);
         border: 0;
         border-radius: 5px;

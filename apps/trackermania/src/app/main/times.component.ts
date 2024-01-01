@@ -9,12 +9,12 @@ import { TimePipe } from './time.pipe';
   template: `
     <section class="content">
       <section class="content-title">
-        <h1>
+        <header>
           <span>Times</span>
-          <button class="add-button" (click)="dialogElement.showModal()">
+          <button class="header-button" (click)="dialogElement.showModal()">
             +
           </button>
-        </h1>
+        </header>
 
         <!--        menu    -->
         <!--        times, sorted by latest added     -->

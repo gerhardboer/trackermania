@@ -21,7 +21,7 @@ interface Tier {
 
     <section class="content">
       <section class="content-title">
-        <h1>Tier list</h1>
+        <header>Tier list</header>
       </section>
       <section class="content-body">
         <div class="tier-list">

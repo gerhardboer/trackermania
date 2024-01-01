@@ -8,10 +8,12 @@ import { ProfileColorDirective } from './profile-color.directive';
   template: `
     <section class="content">
       <section class="content-title">
-        <h1>
+        <header>
           <span>Players</span>
-          <button class="add-button" (click)="addPlayer.showModal()">+</button>
-        </h1>
+          <button class="header-button" (click)="addPlayer.showModal()">
+            +
+          </button>
+        </header>
         <div class="content-title__subtitle"></div>
       </section>
       <section class="content-body">

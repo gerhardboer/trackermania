@@ -14,7 +14,7 @@ import { JsonPipe } from '@angular/common';
   template: `
     <section class="content">
       <section class="content-title">
-        <h1>Track browser</h1>
+        <header>Track browser</header>
         <div class="content-title__subtitle">select a track</div>
       </section>
       <section class="campaigns content-body">
