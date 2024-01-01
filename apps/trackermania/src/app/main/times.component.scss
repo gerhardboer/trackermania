@@ -12,14 +12,20 @@
   }
 
   .stats-info {
-    gap: 15px;
+    gap: 22px;
     display: flex;
     width: 75%;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-  }
 
-  .stat-row__map-name {
+    * {
+      text-align: center;
+      width: 100%;
+    }
+
+    .stat-row__map-name {
+      flex-basis: 25%;
+    }
   }
 }
