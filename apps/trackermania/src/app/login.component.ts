@@ -1,33 +1,37 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticateService } from './authenticate.service';
 
 @Component({
   selector: 'trm-login',
   template: `
-    <div class="login">
-      <div class="login__container">
-        <div class="login__form">
-          <h1>Playername</h1>
-          <div class="login__form__input">
+    <section class="dialog">
+      <section class="dialog__content">
+        <header>
+          <span>Login</span>
+        </header>
+        <section class="dialog__body">
+          <div class="form-row">
             <input
               type="text"
-              placeholder="player name"
+              placeholder="your player name"
               ngModel
               #username="ngModel"
             />
           </div>
-          <div class="login__form__button">
-            <button
-              (click)="login(username.value)"
-              [disabled]="!username.value"
-            >
-              Start
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+        </section>
+        <section class="dialog__footer">
+          <button
+            class="button"
+            (click)="login(username.value)"
+            [disabled]="!username.value"
+          >
+            Go
+          </button>
+        </section>
+      </section>
+    </section>
   `,
   standalone: true,
   styleUrl: './login.component.scss',

@@ -92,22 +92,24 @@ header {
   }
 }
 
-dialog {
+dialog,
+.dialog {
   border: 0;
   border-radius: 5px;
 
-  font-size: 1rem;
-
   min-width: 70vw;
+  padding: 1em;
 
   color: rgba(255, 255, 255, 0.8);
   background: linear-gradient(
     180deg,
-    rgba(1, 101, 143, 0.9) 0%,
+    rgba(1, 101, 143, 1) 0%,
     rgba(1, 49, 102, 1) 100%
   );
 
-  section.dialog {
+  font-size: 1rem;
+
+  .dialog__content {
     display: flex;
     flex-direction: column;
     gap: 18px;

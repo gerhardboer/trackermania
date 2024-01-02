@@ -7,7 +7,7 @@ import { MapNumberPipe } from './map-number.pipe';
 @Component({
   selector: 'trm-add-stat',
   template: `
-    <section class="dialog">
+    <section class="dialog__content">
       <header>
         <span>Add time</span>
       </header>
