@@ -26,25 +26,27 @@ export class StorageApi {
     return this.stats$;
   }
 
-  saveStat(newStat: { campaign: Campaign; map: Track; time: Time }) {
+  saveStat(newStat: { campaign: Campaign; track: Track; time: Time }) {
     this.stats$.update((stats) => {
       const campaign = stats.find((stat) => stat.id === newStat.campaign.id);
       if (campaign) {
-        const map = campaign.maps.find((map) => map.name === newStat.map.name);
-        if (map) {
-          map.time = newStat.time;
+        const track = campaign.tracks.find(
+          (map) => map.name === newStat.track.name
+        );
+        if (track) {
+          track.time = newStat.time;
         } else {
-          campaign.maps.push({
-            ...newStat.map,
+          campaign.tracks.push({
+            ...newStat.track,
             time: newStat.time,
           });
         }
       } else {
         stats.push({
           ...newStat.campaign,
-          maps: [
+          tracks: [
             {
-              ...newStat.map,
+              ...newStat.track,
               time: newStat.time,
             },
           ],

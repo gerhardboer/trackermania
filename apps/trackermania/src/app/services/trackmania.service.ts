@@ -27,7 +27,7 @@ export class TrackmaniaService {
             season,
             year,
             image: `/assets/seasons/${season.toLowerCase()}.png`,
-            maps: [],
+            tracks: [],
           };
         });
       })

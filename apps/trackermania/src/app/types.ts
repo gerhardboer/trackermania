@@ -4,7 +4,7 @@ export type Campaign = {
   image: string;
   year: string;
   season: string;
-  maps: Track[];
+  tracks: Track[];
 };
 
 export type Track = {
