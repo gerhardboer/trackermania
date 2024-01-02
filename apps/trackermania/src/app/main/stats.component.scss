@@ -1,3 +1,9 @@
+.content-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .stat-row {
   display: flex;
   flex-direction: column;

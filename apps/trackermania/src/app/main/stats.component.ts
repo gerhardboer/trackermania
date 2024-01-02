@@ -1,10 +1,11 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AddStatComponent } from './add-stat.component';
 import { TimePipe } from './time.pipe';
 import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Map, Time } from '../types';
+import { StorageApi } from '../storage.api';
 
 @Component({
   selector: 'trm-stats',
@@ -31,7 +32,6 @@ import { Campaign, Map, Time } from '../types';
         <!--        add button-->
 
         <!--        stat row -->
-        <!--        color dot - map name - season  small font -->
         <!--        time: big       -->
         <!--        history? -->
         @for (stat of stats$(); track stat) {
@@ -49,72 +49,32 @@ import { Campaign, Map, Time } from '../types';
           </div>
           }
         </section>
+        } @empty {
+        <section class="stat-row">
+          <span>No stats yet</span>
+        </section>
         }
       </section>
-    </section>
 
-    <dialog #dialogElement>
-      <trm-add-stat
-        (newStat)="saveStat($event, dialogElement)"
-        (closeDialog)="dialogElement.close()"
-      ></trm-add-stat>
-    </dialog>
+      <dialog #dialogElement>
+        <trm-add-stat
+          (newStat)="saveStat($event, dialogElement)"
+          (closeDialog)="dialogElement.close()"
+        ></trm-add-stat>
+      </dialog>
+    </section>
   `,
   standalone: true,
   styleUrl: './stats.component.scss',
   imports: [JsonPipe, FormsModule, AddStatComponent, TimePipe, MapNumberPipe],
 })
 export class StatsComponent {
-  stats$ = signal<Campaign[]>([]);
+  stats$: WritableSignal<Campaign[]>;
+
+  private storage = inject(StorageApi);
 
   constructor() {
-    this.stats$.set([
-      {
-        name: 'Spring 2023',
-        id: 38563,
-        image: '/assets/seasons/spring.png',
-        season: 'Spring',
-        year: '2023',
-        maps: [
-          {
-            name: 'Spring 2023 - 04',
-            author: 'Nadeo',
-            url: 'https://core.trackmania.nadeo.live/storageObjects/7feb0c6c-bbc5-4fc8-b5b4-713b423de1f9',
-            thumbnail:
-              'https://core.trackmania.nadeo.live/storageObjects/b1f77f37-e855-4e12-a3bd-13731c3163e8.jpg',
-            uploaded: '2023-03-23T11:12:13.000Z',
-            storageId: 'b1f77f37-e855-4e12-a3bd-13731c3163e8',
-            uid: 'GYC5gFrd3TvWuyHRWe37ManmC76',
-            fileName: 'Spring 2023 - 04.Map.Gbx',
-            submitterName: 'Nadeo',
-            time: {
-              h: 1,
-              mm: 1,
-              ss: 1,
-              SSS: 1,
-            },
-          },
-          {
-            name: 'Spring 2023 - 04',
-            author: 'Nadeo',
-            url: 'https://core.trackmania.nadeo.live/storageObjects/7feb0c6c-bbc5-4fc8-b5b4-713b423de1f9',
-            thumbnail:
-              'https://core.trackmania.nadeo.live/storageObjects/b1f77f37-e855-4e12-a3bd-13731c3163e8.jpg',
-            uploaded: '2023-03-23T11:12:13.000Z',
-            storageId: 'b1f77f37-e855-4e12-a3bd-13731c3163e8',
-            uid: 'GYC5gFrd3TvWuyHRWe37ManmC76',
-            fileName: 'Spring 2023 - 04.Map.Gbx',
-            submitterName: 'Nadeo',
-            time: {
-              h: 1,
-              mm: 1,
-              ss: 1,
-              SSS: 1,
-            },
-          },
-        ],
-      },
-    ]);
+    this.stats$ = this.storage.getStats();
   }
 
   saveStat(
@@ -125,33 +85,7 @@ export class StatsComponent {
     },
     dialogElement: HTMLDialogElement
   ) {
-    this.stats$.update((stats) => {
-      const campaign = stats.find((stat) => stat.id === newStat.campaign.id);
-      if (campaign) {
-        const map = campaign.maps.find((map) => map.name === newStat.map.name);
-        if (map) {
-          map.time = newStat.time;
-        } else {
-          campaign.maps.push({
-            ...newStat.map,
-            time: newStat.time,
-          });
-        }
-      } else {
-        stats.push({
-          ...newStat.campaign,
-          maps: [
-            {
-              ...newStat.map,
-              time: newStat.time,
-            },
-          ],
-        });
-      }
-
-      return stats;
-    });
-
+    this.storage.saveStat(newStat);
     this.close(dialogElement);
   }
 
