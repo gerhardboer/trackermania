@@ -152,6 +152,10 @@ input {
   cursor: text;
 }
 
+select {
+  min-width: 60px;
+}
+
 .close-button {
   position: absolute;
   top: 0;
@@ -165,6 +169,16 @@ input {
   justify-content: space-between;
   align-items: center;
   margin: 5px 0;
+
+  .loading {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    trm-loading {
+      margin-right: 10px;
+    }
+  }
 
   label {
     margin-right: 1rem;

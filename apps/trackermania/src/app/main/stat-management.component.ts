@@ -11,6 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Time, Track } from '../types';
+import { LoadingComponent } from './loading.component';
 
 @Component({
   selector: 'trm-stat-management',
@@ -45,17 +46,21 @@ import { Campaign, Time, Track } from '../types';
         <div class="form-row">
           <label for="map">Map</label>
 
-          @if (track) {
-          {{ track.name | trmMapNumber }}
-          } @else {
-          <select [(ngModel)]="selectedTrack" id="map">
-            @for (selectedTrack of tracks$(); track selectedTrack) {
-            <option [ngValue]="selectedTrack">
-              {{ selectedTrack.name | trmMapNumber }}
-            </option>
+          <div class="loading">
+            @if(loadingTracks$()) {
+            <trm-loading />
+            } @if (track) {
+            {{ track.name | trmMapNumber }}
+            } @else {
+            <select [(ngModel)]="selectedTrack" id="map">
+              @for (selectedTrack of tracks$(); track selectedTrack) {
+              <option [ngValue]="selectedTrack">
+                {{ selectedTrack.name | trmMapNumber }}
+              </option>
+              }
+            </select>
             }
-          </select>
-          }
+          </div>
         </div>
 
         <div class="form-row time">
@@ -107,7 +112,7 @@ import { Campaign, Time, Track } from '../types';
     </section>
   `,
   standalone: true,
-  imports: [FormsModule, MapNumberPipe],
+  imports: [FormsModule, MapNumberPipe, LoadingComponent],
   styleUrl: './stat-management.component.scss',
 })
 export class StatManagementComponent {
@@ -125,10 +130,11 @@ export class StatManagementComponent {
 
   campaigns$ = toSignal(this.trackmaniaService.getCampaigns());
   tracks$ = signal<Track[]>([]);
+  loadingTracks$ = signal<boolean>(false);
 
   selectedCampaign: Campaign | null = null;
-  selectedTrack: Track | null = null;
 
+  selectedTrack: Track | null = null;
   hh = '';
   mm = '';
   ss = '';
@@ -145,8 +151,10 @@ export class StatManagementComponent {
 
   getTracks($event: Campaign) {
     this.tracks$.set([]);
+    this.loadingTracks$.set(true);
     this.trackmaniaService.getCampaign($event.id).subscribe((campaign) => {
       this.tracks$.set(campaign.tracks);
+      this.loadingTracks$.set(false);
     });
   }
 
