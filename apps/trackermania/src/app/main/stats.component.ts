@@ -7,7 +7,7 @@ import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Map, Time } from '../types';
 
 @Component({
-  selector: 'trm-times',
+  selector: 'trm-stats',
   template: `
     <section class="content">
       <section class="content-title">
@@ -22,7 +22,7 @@ import { Campaign, Map, Time } from '../types';
         </header>
 
         <!--        menu    -->
-        <!--        times, sorted by latest added     -->
+        <!--        stats, sorted by latest added     -->
         <!--        has some filters -->
         <!--        sort by in season map desc/asc -->
       </section>
@@ -34,7 +34,7 @@ import { Campaign, Map, Time } from '../types';
         <!--        color dot - map name - season  small font -->
         <!--        time: big       -->
         <!--        history? -->
-        @for (stat of times$(); track stat) {
+        @for (stat of stats$(); track stat) {
         <section class="stat-row">
           <header>
             {{ stat.name }}
@@ -61,14 +61,14 @@ import { Campaign, Map, Time } from '../types';
     </dialog>
   `,
   standalone: true,
-  styleUrl: './times.component.scss',
+  styleUrl: './stats.component.scss',
   imports: [JsonPipe, FormsModule, AddStatComponent, TimePipe, MapNumberPipe],
 })
-export class TimesComponent {
-  times$ = signal<Campaign[]>([]);
+export class StatsComponent {
+  stats$ = signal<Campaign[]>([]);
 
   constructor() {
-    this.times$.set([
+    this.stats$.set([
       {
         name: 'Spring 2023',
         id: 38563,
@@ -125,7 +125,7 @@ export class TimesComponent {
     },
     dialogElement: HTMLDialogElement
   ) {
-    this.times$.update((stats) => {
+    this.stats$.update((stats) => {
       const campaign = stats.find((stat) => stat.id === newStat.campaign.id);
       if (campaign) {
         const map = campaign.maps.find((map) => map.name === newStat.map.name);

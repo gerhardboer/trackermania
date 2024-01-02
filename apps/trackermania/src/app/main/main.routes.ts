@@ -4,12 +4,12 @@ export const mainRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'times',
+    redirectTo: 'stats',
   },
   {
-    path: 'times',
+    path: 'stats',
     loadComponent: () =>
-      import('./times.component').then((m) => m.TimesComponent),
+      import('./stats.component').then((m) => m.StatsComponent),
   },
   {
     path: 'players',

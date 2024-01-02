@@ -43,6 +43,6 @@ export class LoginComponent {
 
   login(username: string) {
     this.authenticate.login(username);
-    this.router.navigate(['/times']);
+    this.router.navigate(['/stats']);
   }
 }
