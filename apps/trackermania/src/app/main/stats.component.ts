@@ -1,10 +1,10 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, inject, WritableSignal } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AddStatComponent } from './add-stat.component';
 import { TimePipe } from './time.pipe';
 import { MapNumberPipe } from './map-number.pipe';
-import { Campaign, Map, Time } from '../types';
+import { Campaign, Track, Time } from '../types';
 import { StorageApi } from '../storage.api';
 
 @Component({
@@ -39,13 +39,16 @@ import { StorageApi } from '../storage.api';
           <header>
             {{ stat.name }}
           </header>
-          @for (map of stat.maps; track map) {
-          <div class="stats-info">
+          @for (track of stat.tracks; track track) {
+          <div
+            class="stats-info"
+            (click)="editStat(stat, track, dialogElement)"
+          >
             <div class="stat-row__map-name">
-              {{ map.name | trmMapNumber }}
+              {{ track.name | trmMapNumber }}
             </div>
 
-            <div class="stat-row__time">{{ map.time | time }}</div>
+            <div class="stat-row__time">{{ track.time | time }}</div>
           </div>
           }
         </section>
@@ -57,10 +60,12 @@ import { StorageApi } from '../storage.api';
       </section>
 
       <dialog #dialogElement>
-        <trm-add-stat
+        <trm-stat-management
+          [campaign]="selectedCampaign"
+          [track]="selectedTrack"
           (newStat)="saveStat($event, dialogElement)"
           (closeDialog)="dialogElement.close()"
-        ></trm-add-stat>
+        ></trm-stat-management>
       </dialog>
     </section>
   `,
@@ -71,6 +76,9 @@ import { StorageApi } from '../storage.api';
 export class StatsComponent {
   stats$: WritableSignal<Campaign[]>;
 
+  selectedCampaign: Campaign | undefined;
+  selectedTrack: Track | undefined;
+
   private storage = inject(StorageApi);
 
   constructor() {
@@ -80,7 +88,7 @@ export class StatsComponent {
   saveStat(
     newStat: {
       campaign: Campaign;
-      map: Map;
+      track: Track;
       time: Time;
     },
     dialogElement: HTMLDialogElement
@@ -91,5 +99,13 @@ export class StatsComponent {
 
   close(dialogElement: HTMLDialogElement) {
     dialogElement.close();
+    this.selectedCampaign = undefined;
+    this.selectedTrack = undefined;
+  }
+
+  editStat(stat: Campaign, track: Track, dialogElement: HTMLDialogElement) {
+    this.selectedCampaign = stat;
+    this.selectedTrack = track;
+    dialogElement.showModal();
   }
 }

@@ -1,40 +1,59 @@
-import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  signal,
+} from '@angular/core';
 import { TrackmaniaService } from '../services/trackmania.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MapNumberPipe } from './map-number.pipe';
+import { Campaign, Time, Track } from '../types';
 
 @Component({
-  selector: 'trm-add-stat',
+  selector: 'trm-stat-management',
   template: `
     <section class="dialog__content">
       <header>
-        <span>Add time</span>
+        <span>Set Time</span>
       </header>
 
       <section class="dialog__body">
         <div class="form-row">
           <label for="campaign">Campaign</label>
 
+          @if (campaign) {
+          {{ campaign.name }}
+          } @else {
           <select
-            [(ngModel)]="campaign"
-            (ngModelChange)="getMaps($event)"
+            [(ngModel)]="selectedCampaign"
+            (ngModelChange)="getTracks($event)"
             id="campaign"
           >
-            @for (campaign of campaigns$();track campaign) {
-            <option [ngValue]="campaign">{{ campaign.name }}</option>
+            @for (selectableCampaign of campaigns$(); track selectableCampaign)
+            {
+            <option [ngValue]="selectableCampaign">
+              {{ selectableCampaign.name }}
+            </option>
             }
           </select>
+          }
         </div>
 
         <div class="form-row">
           <label for="map">Map</label>
 
-          <select [(ngModel)]="map" id="map">
-            @for (map of maps$();track map) {
-            <option [ngValue]="map">{{ map.name | trmMapNumber }}</option>
+          @if (track) {
+          {{ track.name | trmMapNumber }}
+          } @else {
+          <select [(ngModel)]="selectedTrack" id="map">
+            @for (track of tracks$(); track track) {
+            <option [ngValue]="track">{{ track.name | trmMapNumber }}</option>
             }
           </select>
+          }
         </div>
 
         <div class="form-row time">
@@ -86,47 +105,54 @@ import { MapNumberPipe } from './map-number.pipe';
   styleUrl: './add-stat.component.scss',
 })
 export class AddStatComponent {
+  @Input() campaign: Campaign | undefined;
+  @Input() track: Track | undefined;
+
   @Output() closeDialog = new EventEmitter<void>();
   @Output() newStat = new EventEmitter<{
-    campaign: any;
-    map: any;
-    time: {
-      h: number;
-      mm: number;
-      ss: number;
-      SSS: number;
-    };
+    campaign: Campaign;
+    track: Track;
+    time: Time;
   }>();
 
   trackmaniaService = inject(TrackmaniaService);
 
   campaigns$ = toSignal(this.trackmaniaService.getCampaigns());
-  maps$ = signal<any[]>([]);
+  tracks$ = signal<Track[]>([]);
 
-  map: any;
-  campaign: any;
+  selectedCampaign: Campaign | null = null;
+  selectedTrack: Track | null = null;
 
   hh = '';
   mm = '';
   ss = '';
   SSS = '';
 
-  getMaps($event) {
-    this.maps$.set([]);
+  ngOnChanges() {
+    if (this.track?.time) {
+      this.hh = this.track?.time.h.toString();
+      this.mm = this.track?.time.mm.toString();
+      this.ss = this.track?.time.ss.toString();
+      this.SSS = this.track?.time.SSS.toString();
+    }
+  }
+
+  getTracks($event: Campaign) {
+    this.tracks$.set([]);
     this.trackmaniaService.getCampaign($event.id).subscribe((campaign) => {
-      this.maps$.set(campaign.maps);
+      this.tracks$.set(campaign.tracks);
     });
   }
 
   saveTime() {
-    if (
-      this.campaign &&
-      this.map &&
-      (this.hh || this.mm || this.ss || this.SSS)
-    ) {
+    const campaign = this.campaign ?? this.selectedCampaign;
+    const track = this.track ?? this.selectedTrack;
+    const hasTime = this.hh || this.mm || this.ss || this.SSS;
+
+    if (campaign && track && hasTime) {
       this.newStat.emit({
-        campaign: this.campaign,
-        map: this.map,
+        campaign,
+        track,
         time: {
           h: this.hh ? parseInt(this.hh) : 0,
           mm: this.mm ? parseInt(this.mm) : 0,
@@ -135,8 +161,8 @@ export class AddStatComponent {
         },
       });
 
-      this.map = null;
-      this.campaign = null;
+      this.selectedTrack = null;
+      this.selectedCampaign = null;
       this.hh = '';
       this.mm = '';
       this.ss = '';
