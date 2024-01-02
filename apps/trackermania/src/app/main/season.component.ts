@@ -8,6 +8,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TrackmaniaService } from '../services/trackmania.service';
 import { JsonPipe } from '@angular/common';
+import { Campaign } from '../types';
 
 @Component({
   selector: 'trm-season',
@@ -29,7 +30,7 @@ import { JsonPipe } from '@angular/common';
           <section class="season-container">
             @for (season of campaignsByYear.seasons;track season) {
 
-            <div class="season" (click)="selectCampaign(season.campaignId)">
+            <div class="season" (click)="selectCampaign(season.id)">
               <img src="{{ season.image }}" alt="{{ season.name }}" />
               <span class="season-name">{{ season.name }}</span>
             </div>
@@ -45,32 +46,34 @@ import { JsonPipe } from '@angular/common';
   imports: [JsonPipe],
 })
 export class SeasonComponent {
-  @Output() campaignSelected = new EventEmitter<string>();
+  @Output() campaignSelected = new EventEmitter<Campaign>();
 
   trackmaniaService = inject(TrackmaniaService);
 
   campaigns = toSignal(this.trackmaniaService.getCampaigns());
 
-  campaignsByYear = computed(() => {
+  campaignsByYear = computed<{ year: string; seasons: Campaign[] }[]>(() => {
     const campaigns = this.campaigns();
     if (!campaigns) return [];
     return this.transformToCampaignsByYear(campaigns);
   });
 
-  selectCampaign(campaignId: string) {
+  selectCampaign(campaignId: number) {
     this.trackmaniaService
       .getCampaign(campaignId)
-      .subscribe((campaign: any) => {
+      .subscribe((campaign: Campaign) => {
         this.campaignSelected.emit(campaign);
       });
   }
 
-  private transformToCampaignsByYear(campaigns) {
+  private transformToCampaignsByYear(
+    campaigns
+  ): { year: string; seasons: Campaign[] }[] {
     // campaigns look like this: ['fall 2022, 'spring 2022', 'fall 2021', 'spring 2021']
     // i want to group them by year, so it looks like this:
     // { 2022: ['fall 2022', 'spring 2022'], 2021: ['fall 2021', 'spring 2021'] }
-    const campaignsByYear: { year: number; seasons: any[] }[] = [];
-    campaigns.forEach((campaign: any) => {
+    const campaignsByYear: { year: string; seasons: Campaign[] }[] = [];
+    campaigns.forEach((campaign: Campaign) => {
       const existingCampaign = campaignsByYear.find(
         (campaignByYear) => campaignByYear.year === campaign.year
       );
