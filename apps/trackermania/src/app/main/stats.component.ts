@@ -1,7 +1,7 @@
 import { Component, inject, WritableSignal } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AddStatComponent } from './add-stat.component';
+import { StatManagementComponent } from './stat-management.component';
 import { TimePipe } from './time.pipe';
 import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Track, Time } from '../types';
@@ -71,7 +71,13 @@ import { StorageApi } from '../storage.api';
   `,
   standalone: true,
   styleUrl: './stats.component.scss',
-  imports: [JsonPipe, FormsModule, AddStatComponent, TimePipe, MapNumberPipe],
+  imports: [
+    JsonPipe,
+    FormsModule,
+    StatManagementComponent,
+    TimePipe,
+    MapNumberPipe,
+  ],
 })
 export class StatsComponent {
   stats$: WritableSignal<Campaign[]>;

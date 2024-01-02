@@ -102,9 +102,9 @@ import { Campaign, Time, Track } from '../types';
   `,
   standalone: true,
   imports: [FormsModule, MapNumberPipe],
-  styleUrl: './add-stat.component.scss',
+  styleUrl: './stat-management.component.scss',
 })
-export class AddStatComponent {
+export class StatManagementComponent {
   @Input() campaign: Campaign | undefined;
   @Input() track: Track | undefined;
 
