@@ -1,10 +1,16 @@
-import { Component, inject, WritableSignal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  ViewChild,
+  WritableSignal,
+} from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StatManagementComponent } from './stat-management.component';
 import { TimePipe } from './time.pipe';
 import { MapNumberPipe } from './map-number.pipe';
-import { Campaign, Track, Time } from '../types';
+import { Campaign, Time, Track } from '../types';
 import { StorageApi } from '../storage.api';
 
 @Component({
@@ -16,7 +22,7 @@ import { StorageApi } from '../storage.api';
           <span>Your stats</span>
           <button
             class="button header-button content-title__header-button"
-            (click)="dialogElement.showModal()"
+            (click)="addStat()"
           >
             +
           </button>
@@ -40,10 +46,7 @@ import { StorageApi } from '../storage.api';
             {{ stat.name }}
           </header>
           @for (track of stat.tracks; track track) {
-          <div
-            class="stats-info"
-            (click)="editStat(stat, track, dialogElement)"
-          >
+          <div class="stats-info" (click)="editStat(stat, track)">
             <div class="stat-row__map-name">
               {{ track.name | trmMapNumber }}
             </div>
@@ -58,14 +61,15 @@ import { StorageApi } from '../storage.api';
         </section>
         }
       </section>
-
       <dialog #dialogElement>
+        @if(dialogElement.open) {
         <trm-stat-management
           [campaign]="selectedCampaign"
           [track]="selectedTrack"
-          (saveStat)="saveStat($event, dialogElement)"
+          (saveStat)="saveStat($event)"
           (closeDialog)="dialogElement.close()"
         ></trm-stat-management>
+        }
       </dialog>
     </section>
   `,
@@ -85,33 +89,42 @@ export class StatsComponent {
   selectedCampaign: Campaign | undefined;
   selectedTrack: Track | undefined;
 
+  @ViewChild('dialogElement')
+  dialogElement!: ElementRef<HTMLDialogElement>;
+
   private storage = inject(StorageApi);
 
   constructor() {
     this.stats$ = this.storage.getStats();
   }
 
-  saveStat(
-    newStat: {
-      campaign: Campaign;
-      track: Track;
-      time: Time | undefined;
-    },
-    dialogElement: HTMLDialogElement
-  ) {
+  ngAfterViewInit() {
+    this.dialogElement.nativeElement.addEventListener('close', () => {
+      this.selectedCampaign = undefined;
+      this.selectedTrack = undefined;
+    });
+  }
+
+  saveStat(newStat: {
+    campaign: Campaign;
+    track: Track;
+    time: Time | undefined;
+  }) {
     this.storage.saveStat(newStat);
-    this.close(dialogElement);
+    this.close();
   }
 
-  close(dialogElement: HTMLDialogElement) {
-    dialogElement.close();
-    this.selectedCampaign = undefined;
-    this.selectedTrack = undefined;
+  close() {
+    this.dialogElement.nativeElement.close();
   }
 
-  editStat(stat: Campaign, track: Track, dialogElement: HTMLDialogElement) {
+  editStat(stat: Campaign, track: Track) {
     this.selectedCampaign = stat;
     this.selectedTrack = track;
-    dialogElement.showModal();
+    this.dialogElement.nativeElement.showModal();
+  }
+
+  addStat() {
+    this.dialogElement.nativeElement.showModal();
   }
 }
