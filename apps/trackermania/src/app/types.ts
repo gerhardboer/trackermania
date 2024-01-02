@@ -1,3 +1,7 @@
+export type TrackmaniaIoCampaign = Campaign & {
+  maps: Track[];
+};
+
 export type Campaign = {
   name: string;
   id: number;
