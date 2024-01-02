@@ -49,8 +49,10 @@ import { Campaign, Time, Track } from '../types';
           {{ track.name | trmMapNumber }}
           } @else {
           <select [(ngModel)]="selectedTrack" id="map">
-            @for (track of tracks$(); track track) {
-            <option [ngValue]="track">{{ track.name | trmMapNumber }}</option>
+            @for (selectedTrack of tracks$(); track selectedTrack) {
+            <option [ngValue]="selectedTrack">
+              {{ selectedTrack.name | trmMapNumber }}
+            </option>
             }
           </select>
           }
