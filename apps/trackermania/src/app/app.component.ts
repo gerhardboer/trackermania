@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { AuthenticateService } from './authenticate.service';
 
 @Component({
   standalone: true,
@@ -9,5 +10,9 @@ import { RouterModule } from '@angular/router';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'trackermania';
+  private authenticate = inject(AuthenticateService);
+
+  isLoggedIn = this.authenticate.loggedIn;
+
+  constructor() {}
 }

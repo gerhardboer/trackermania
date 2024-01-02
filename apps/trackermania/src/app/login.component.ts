@@ -39,9 +39,10 @@ import { AuthenticateService } from './authenticate.service';
 })
 export class LoginComponent {
   private router = inject(Router);
+  private authenticate = inject(AuthenticateService);
 
   login(username: string) {
-    localStorage.setItem('user', username);
-    this.router.navigate(['/season']);
+    this.authenticate.login(username);
+    this.router.navigate(['/times']);
   }
 }

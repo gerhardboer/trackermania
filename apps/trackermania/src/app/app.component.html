@@ -1,12 +1,14 @@
-<div class="app">
+<div class="app" [class.public]="!isLoggedIn()">
+  @if (isLoggedIn()) {
   <nav>
     <!--    <a routerLink="/players" routerLinkActive="active">Players</a>-->
     <!--    <a routerLink="/tier-list" routerLinkActive="active">TierLists</a>-->
     <a routerLink="/times" routerLinkActive="active">Times</a>
     <!--    <a routerLink="/game-session" routerLinkActive="active">Game Sessions</a>-->
   </nav>
+  }
 
-    <main>
-        <router-outlet></router-outlet>
-    </main>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
 </div>

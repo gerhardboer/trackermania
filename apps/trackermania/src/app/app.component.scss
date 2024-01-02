@@ -9,13 +9,27 @@
   }
 }
 
+.app.public {
+  main {
+    margin-bottom: 75px;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  margin-top: 30px;
+  height: calc(100% - 75px); // height of navbar + margin
+}
+
 nav {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 1rem 1rem 0 1rem;
+  padding: 0rem 1rem;
   color: #fff;
-  height: 60px;
+  min-height: 75px;
   width: 60%;
   margin: auto;
   justify-content: center;
@@ -50,14 +64,6 @@ nav {
     );
     filter: blur(3px);
   }
-}
-
-main {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  margin-top: 30px;
-  height: calc(100% - 120px); // height of navbar + margin
 }
 
 @media screen and (min-width: 768px) {
