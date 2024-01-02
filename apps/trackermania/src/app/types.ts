@@ -4,10 +4,10 @@ export type Campaign = {
   image: string;
   year: string;
   season: string;
-  maps: Map[];
+  maps: Track[];
 };
 
-export type Map = {
+export type Track = {
   name: string;
   author: string;
   url: string;

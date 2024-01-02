@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Campaign, Map, Time } from './types';
+import { Campaign, Track, Time } from './types';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +26,7 @@ export class StorageApi {
     return this.stats$;
   }
 
-  saveStat(newStat: { campaign: Campaign; map: Map; time: Time }) {
+  saveStat(newStat: { campaign: Campaign; map: Track; time: Time }) {
     this.stats$.update((stats) => {
       const campaign = stats.find((stat) => stat.id === newStat.campaign.id);
       if (campaign) {
