@@ -63,7 +63,7 @@ import { StorageApi } from '../storage.api';
         <trm-stat-management
           [campaign]="selectedCampaign"
           [track]="selectedTrack"
-          (newStat)="saveStat($event, dialogElement)"
+          (saveStat)="saveStat($event, dialogElement)"
           (closeDialog)="dialogElement.close()"
         ></trm-stat-management>
       </dialog>
@@ -95,7 +95,7 @@ export class StatsComponent {
     newStat: {
       campaign: Campaign;
       track: Track;
-      time: Time;
+      time: Time | undefined;
     },
     dialogElement: HTMLDialogElement
   ) {

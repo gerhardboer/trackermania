@@ -96,6 +96,10 @@ import { Campaign, Time, Track } from '../types';
 
       <section class="dialog__footer">
         <button class="button" (click)="closeDialog.emit()">close</button>
+
+        @if (campaign && track && track.time) {
+        <button class="button" (click)="clearTime()">clear</button>
+        }
         <button class="button" (click)="saveTime()">Save</button>
       </section>
     </section>
@@ -109,10 +113,10 @@ export class StatManagementComponent {
   @Input() track: Track | undefined;
 
   @Output() closeDialog = new EventEmitter<void>();
-  @Output() newStat = new EventEmitter<{
+  @Output() saveStat = new EventEmitter<{
     campaign: Campaign;
     track: Track;
-    time: Time;
+    time: Time | undefined;
   }>();
 
   trackmaniaService = inject(TrackmaniaService);
@@ -150,7 +154,7 @@ export class StatManagementComponent {
     const hasTime = this.hh || this.mm || this.ss || this.SSS;
 
     if (campaign && track && hasTime) {
-      this.newStat.emit({
+      this.saveStat.emit({
         campaign,
         track,
         time: {
@@ -161,6 +165,22 @@ export class StatManagementComponent {
         },
       });
 
+      this.selectedTrack = null;
+      this.selectedCampaign = null;
+      this.hh = '';
+      this.mm = '';
+      this.ss = '';
+      this.SSS = '';
+    }
+  }
+
+  clearTime() {
+    if (this.campaign && this.track) {
+      this.saveStat.emit({
+        campaign: this.campaign,
+        track: this.track,
+        time: undefined,
+      });
       this.selectedTrack = null;
       this.selectedCampaign = null;
       this.hh = '';

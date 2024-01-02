@@ -26,7 +26,11 @@ export class StorageApi {
     return this.stats$;
   }
 
-  saveStat(newStat: { campaign: Campaign; track: Track; time: Time }) {
+  saveStat(newStat: {
+    campaign: Campaign;
+    track: Track;
+    time: Time | undefined;
+  }) {
     this.stats$.update((stats) => {
       const campaign = stats.find((stat) => stat.id === newStat.campaign.id);
       if (campaign) {
