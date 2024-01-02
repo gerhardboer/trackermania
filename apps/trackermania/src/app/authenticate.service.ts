@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { StorageApi } from './storage.api';
 
 @Injectable({
   providedIn: 'root',
@@ -6,14 +7,16 @@ import { Injectable, signal } from '@angular/core';
 export class AuthenticateService {
   loggedIn = signal(false);
 
+  private storage = inject(StorageApi);
+
   constructor() {
-    if (localStorage.getItem('user')) {
+    if (this.storage.getCurrentUser()) {
       this.loggedIn.set(true);
     }
   }
 
   login(username: string) {
-    localStorage.setItem('user', username);
+    this.storage.storeUser(username);
     this.loggedIn.set(true);
   }
 }
