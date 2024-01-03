@@ -31,6 +31,7 @@ app.get('/campaign', async (req, res) => {
       campaign: campaign.name,
       image: campaign.image,
       maps: maps.map((map) => ({
+        id: map.id,
         name: map.name,
         author: map.authorName,
         url: map.url,

@@ -3,8 +3,8 @@ export type TrackmaniaIoCampaign = Campaign & {
 };
 
 export type Campaign = {
-  name: string;
   id: number;
+  name: string;
   image: string;
   year: string;
   season: string;
@@ -12,6 +12,7 @@ export type Campaign = {
 };
 
 export type Track = {
+  id: number;
   name: string;
   author: string;
   url: string;
