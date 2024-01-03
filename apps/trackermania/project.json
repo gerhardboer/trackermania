@@ -16,6 +16,7 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/trackermania/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
+
         "assets": [
           "apps/trackermania/src/favicon.ico",
           "apps/trackermania/src/assets"

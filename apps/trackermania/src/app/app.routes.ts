@@ -1,5 +1,6 @@
 import { Route, Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { UserApi } from './api/user-api.service';
 
 export const appRoutes: Route[] = [
   {
@@ -14,7 +15,9 @@ export const appRoutes: Route[] = [
     canActivate: [
       () => {
         const router = inject(Router);
-        const hasUser = !!localStorage.getItem('user');
+        const storage = inject(UserApi);
+
+        const hasUser = storage.userId$();
         if (!hasUser) {
           return router.navigate(['/login']);
         }

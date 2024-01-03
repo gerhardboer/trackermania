@@ -11,7 +11,7 @@ import { StatManagementComponent } from './stat-management.component';
 import { TimePipe } from './time.pipe';
 import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Time, Track } from '../types';
-import { StorageApi } from '../storage.api';
+import { StatsApi } from '../api/stats.api';
 
 @Component({
   selector: 'trm-stats',
@@ -92,10 +92,10 @@ export class StatsComponent {
   @ViewChild('dialogElement')
   dialogElement!: ElementRef<HTMLDialogElement>;
 
-  private storage = inject(StorageApi);
+  private stats = inject(StatsApi);
 
   constructor() {
-    this.stats$ = this.storage.getStats();
+    this.stats$ = this.stats.stats$;
   }
 
   ngAfterViewInit() {
@@ -110,7 +110,7 @@ export class StatsComponent {
     track: Track;
     time: Time | undefined;
   }) {
-    this.storage.saveStat(newStat);
+    this.stats.saveStat(newStat);
     this.close();
   }
 

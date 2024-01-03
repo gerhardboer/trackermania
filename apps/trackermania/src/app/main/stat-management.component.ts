@@ -44,7 +44,7 @@ import { LoadingComponent } from './loading.component';
         </div>
 
         <div class="form-row">
-          <label for="map">Map</label>
+          <label for="track">Map</label>
 
           <div class="loading">
             @if(loadingTracks$()) {
@@ -52,7 +52,7 @@ import { LoadingComponent } from './loading.component';
             } @if (track) {
             {{ track.name | trmMapNumber }}
             } @else {
-            <select [(ngModel)]="selectedTrack" id="map">
+            <select [(ngModel)]="selectedTrack" id="track">
               @for (selectedTrack of tracks$(); track selectedTrack) {
               <option [ngValue]="selectedTrack">
                 {{ selectedTrack.name | trmMapNumber }}
