@@ -12,6 +12,8 @@ import { TimePipe } from './time.pipe';
 import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Time, Track } from '../types';
 import { StatsApi } from '../api/stats.api';
+import { SeasonComponent } from './season.component';
+import { CampaignsComponent } from '../shared/campaigns.component';
 
 @Component({
   selector: 'trm-stats',
@@ -40,26 +42,7 @@ import { StatsApi } from '../api/stats.api';
         <!--        stat row -->
         <!--        time: big       -->
         <!--        history? -->
-        @for (stat of stats$(); track stat) {
-        <section class="stat-row">
-          <header>
-            {{ stat.name }}
-          </header>
-          @for (track of stat.tracks; track track) {
-          <div class="stats-info" (click)="editStat(stat, track)">
-            <div class="stat-row__map-name">
-              {{ track.name | trmMapNumber }}
-            </div>
-
-            <div class="stat-row__time">{{ track.time | time }}</div>
-          </div>
-          }
-        </section>
-        } @empty {
-        <section class="stat-row">
-          <span>No stats yet</span>
-        </section>
-        }
+        <trm-campaigns></trm-campaigns>
       </section>
       <dialog #dialogElement>
         @if(dialogElement.open) {
@@ -81,6 +64,7 @@ import { StatsApi } from '../api/stats.api';
     StatManagementComponent,
     TimePipe,
     MapNumberPipe,
+    CampaignsComponent,
   ],
 })
 export class StatsComponent {

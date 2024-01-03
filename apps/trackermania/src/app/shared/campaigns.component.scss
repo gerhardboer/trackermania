@@ -1,0 +1,95 @@
+.campaigns {
+  .campaign-row {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    height: 80px;
+    margin-left: -15px;
+
+    .season-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow: scroll;
+
+      .season {
+        width: 100px;
+        cursor: pointer;
+
+        position: relative;
+        white-space: nowrap;
+
+        img {
+          max-width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .season-name {
+          position: absolute;
+          left: 5px;
+          bottom: 7px;
+
+          font-style: italic;
+          font-size: 0.8rem;
+          font-weight: bold;
+
+          -webkit-text-stroke: 1px black;
+          color: white;
+          text-transform: uppercase;
+          text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5),
+            -1px -1px 0px rgba(0, 0, 0, 0.5), 1px -1px 0px rgba(0, 0, 0, 0.5),
+            -1px 1px 0px rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+  }
+
+  .year-container {
+    display: flex;
+    align-items: center;
+    width: 50px; // magic number to fit with season image
+
+    .year {
+      font-size: 0.8rem;
+      color: rgba(1, 203, 117, 0.7);
+      transform: rotate(270deg);
+      padding: 5px 11px;
+      border-radius: 8px 6px 0 0;
+      letter-spacing: 0.1rem;
+      background: #00402d;
+      font-style: italic;
+      margin-top: -4px; // magic number to fit with season image
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .campaigns {
+    .campaign-row {
+      height: 125px;
+      margin-left: 0;
+
+      .season-container {
+        justify-content: center;
+
+        .season {
+          width: 177px; // magic number to match height of year
+
+          .season-name {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    .year-container {
+      width: 80px; // magic number to fit with season image
+
+      .year {
+        padding: 5px 20px;
+        font-size: 1rem;
+      }
+    }
+  }
+}
