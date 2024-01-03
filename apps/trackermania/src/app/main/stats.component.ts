@@ -12,7 +12,6 @@ import { TimePipe } from './time.pipe';
 import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Time, Track } from '../types';
 import { StatsApi } from '../api/stats.api';
-import { SeasonComponent } from './season.component';
 import { CampaignsComponent } from '../shared/campaigns.component';
 
 @Component({

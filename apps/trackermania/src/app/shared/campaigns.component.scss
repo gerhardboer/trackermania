@@ -1,19 +1,23 @@
 .campaigns {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
   .campaign-row {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-grow: 1;
-    height: 80px;
-    margin-left: -15px;
 
     .season-container {
       display: flex;
       align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
       overflow: scroll;
 
       .season {
-        width: 100px;
+        width: 45%;
         cursor: pointer;
 
         position: relative;
@@ -31,7 +35,7 @@
           bottom: 7px;
 
           font-style: italic;
-          font-size: 0.8rem;
+          font-size: 1rem;
           font-weight: bold;
 
           -webkit-text-stroke: 1px black;
@@ -48,13 +52,12 @@
   .year-container {
     display: flex;
     align-items: center;
-    width: 50px; // magic number to fit with season image
+    justify-content: center;
 
     .year {
       font-size: 0.8rem;
       color: rgba(1, 203, 117, 0.7);
-      transform: rotate(270deg);
-      padding: 5px 11px;
+      padding: 5px 40px;
       border-radius: 8px 6px 0 0;
       letter-spacing: 0.1rem;
       background: #00402d;
@@ -66,29 +69,33 @@
 
 @media screen and (min-width: 768px) {
   .campaigns {
+    flex-direction: column;
+
     .campaign-row {
+      flex-direction: row;
+      flex-grow: 1;
       height: 125px;
-      margin-left: 0;
 
       .season-container {
-        justify-content: center;
+        align-items: center;
+        overflow: scroll;
+        flex-wrap: nowrap;
 
         .season {
-          width: 177px; // magic number to match height of year
-
-          .season-name {
-            font-size: 1rem;
-          }
+          min-width: 190px;
+          max-width: 190px;
         }
       }
     }
 
     .year-container {
+      justify-content: unset;
       width: 80px; // magic number to fit with season image
 
       .year {
-        padding: 5px 20px;
-        font-size: 1rem;
+        transform: rotate(270deg);
+        padding: 5px 36px;
+        margin-top: -4px; // magic number to fit with season image
       }
     }
   }
