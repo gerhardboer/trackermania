@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   inject,
@@ -13,6 +14,7 @@ import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Time, Track } from '../types';
 import { StatsApi } from '../api/stats.api';
 import { CampaignsComponent } from '../shared/campaigns.component';
+import { TracksComponent } from '../shared/tracks.component';
 
 @Component({
   selector: 'trm-stats',
@@ -20,7 +22,7 @@ import { CampaignsComponent } from '../shared/campaigns.component';
     <section class="content">
       <section class="content-title">
         <header>
-          <span>Your stats</span>
+          <span></span>
           <button
             class="button header-button content-title__header-button"
             (click)="addStat()"
@@ -28,20 +30,15 @@ import { CampaignsComponent } from '../shared/campaigns.component';
             +
           </button>
         </header>
-
-        <!--        menu    -->
-        <!--        stats, sorted by latest added     -->
-        <!--        has some filters -->
-        <!--        sort by in season map desc/asc -->
       </section>
       <section class="content-body">
-        <!--        filter bar  -->
-        <!--        add button-->
-
-        <!--        stat row -->
-        <!--        time: big       -->
-        <!--        history? -->
-        <trm-campaigns></trm-campaigns>
+        @if(!selectedCampaign) {
+        <trm-campaigns
+          (campaignSelected)="selectedCampaign = $event"
+        ></trm-campaigns>
+        } @else {
+        <trm-tracks [campaign]="selectedCampaign"></trm-tracks>
+        }
       </section>
       <dialog #dialogElement>
         @if(dialogElement.open) {
@@ -64,9 +61,10 @@ import { CampaignsComponent } from '../shared/campaigns.component';
     TimePipe,
     MapNumberPipe,
     CampaignsComponent,
+    TracksComponent,
   ],
 })
-export class StatsComponent {
+export class StatsComponent implements AfterViewInit {
   stats$: WritableSignal<Campaign[]>;
 
   selectedCampaign: Campaign | undefined;

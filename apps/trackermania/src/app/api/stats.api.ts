@@ -22,46 +22,20 @@ export class StatsApi {
 
   constructor() {
     onSnapshot(doc(this.statsCollection, this.userId), (snapshot) => {
-      const data = snapshot.data() as { campaigns: Campaign[] };
+      const data = snapshot.data() as { stats: Campaign[] };
       if (data) {
-        this.stats$.set(data.campaigns);
+        this.stats$.set(data.stats);
       }
     });
   }
 
   saveStat(stat: { campaign: Campaign; track: Track; time: Time | undefined }) {
-    const currentStats = this.stats$();
-    const campaign = currentStats.find(
-      (currentStat) => currentStat.id === stat.campaign.id
+    setDoc(
+      doc(
+        this.statsCollection,
+        `${this.userId}/${stat.campaign.id}/${stat.track.id}`
+      ),
+      stat.time
     );
-    if (campaign) {
-      const track = campaign.tracks.find((map) => map.name === stat.track.name);
-      if (track) {
-        if (stat.time) {
-          track.time = stat.time;
-        } else {
-          delete track.time;
-        }
-      } else {
-        campaign.tracks.push({
-          ...stat.track,
-          time: stat.time,
-        });
-      }
-    } else {
-      currentStats.push({
-        ...stat.campaign,
-        tracks: [
-          {
-            ...stat.track,
-            time: stat.time,
-          },
-        ],
-      });
-    }
-
-    setDoc(doc(this.statsCollection, this.userId), {
-      campaigns: currentStats,
-    });
   }
 }

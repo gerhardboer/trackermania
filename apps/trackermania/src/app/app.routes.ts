@@ -1,6 +1,7 @@
 import { Route, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { UserApi } from './api/user-api.service';
+import { AuthenticateService } from './authenticate.service';
+import { map } from 'rxjs';
 
 export const appRoutes: Route[] = [
   {
@@ -15,14 +16,16 @@ export const appRoutes: Route[] = [
     canActivate: [
       () => {
         const router = inject(Router);
-        const storage = inject(UserApi);
+        const auth = inject(AuthenticateService);
 
-        const hasUser = storage.userId$();
-        if (!hasUser) {
-          return router.navigate(['/login']);
-        }
-
-        return true;
+        return auth.user$.pipe(
+          map((user) => {
+            if (!user) {
+              return router.navigate(['/login']);
+            }
+            return true;
+          })
+        );
       },
     ],
     loadChildren: () => import('./main/main.routes').then((m) => m.mainRoutes),
