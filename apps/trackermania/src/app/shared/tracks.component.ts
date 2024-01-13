@@ -23,6 +23,7 @@ import { FastestTimePipe } from '../main/fastest-time.pipe';
         <img [src]="track.thumbnail" alt="{{ track.name }}" />
 
         <div class="track__time">
+          <i class="fa-regular fa-clock"></i>
           {{ stats$()[campaign.id]?.[track.id] | fastestTime | time }}
         </div>
       </div>

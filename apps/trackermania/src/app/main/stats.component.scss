@@ -4,6 +4,33 @@
   gap: 24px;
 }
 
+.content-title {
+  header {
+    span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .back-button {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 0.8rem;
+    }
+  }
+
+  .add-stat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
+
 .stat-row {
   display: flex;
   flex-direction: column;

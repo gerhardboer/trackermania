@@ -18,12 +18,12 @@ export class TimePipe implements PipeTransform {
       return '-';
     }
 
-    const hPrev = time.h ? `${time.h}:` : '',
-      mPrev = time.h ? `${time.mm}:` : '';
+    const hPrev = time.h ? `${time.h}:` : '';
 
-    const seconds = formatNumber(time.ss, 'en-US', '2.0-0'),
+    const minutes = formatNumber(time.mm, 'en-US', '2.0-0'),
+      seconds = formatNumber(time.ss, 'en-US', '2.0-0'),
       milliseconds = formatNumber(time.SSS, 'en-US', '3.0-0');
 
-    return `${hPrev}${mPrev}${seconds}.${milliseconds}`;
+    return `${hPrev}${minutes}:${seconds}.${milliseconds}`;
   }
 }

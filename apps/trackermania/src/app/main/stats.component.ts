@@ -24,15 +24,23 @@ import { StatsApi } from '../api/stats.api';
         <header>
           <span>
             @if(selectedCampaign()) {
-            <button (click)="selectedCampaign.set(undefined)"><</button>
+            <button
+              class="button header-button content-title__header-button back"
+              (click)="
+                selectedCampaign.set(undefined); selectedTrack.set(undefined)
+              "
+            >
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
             }
-            {{ title() }}
+            <span>{{ title() }} </span>
           </span>
+
           <button
-            class="button header-button content-title__header-button"
+            class="button header-button content-title__header-button add-stat"
             (click)="addStat()"
           >
-            +
+            +<i class="fa-solid fa-stopwatch"></i>
           </button>
         </header>
       </section>

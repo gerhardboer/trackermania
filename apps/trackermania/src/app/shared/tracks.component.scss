@@ -13,12 +13,12 @@
     border-radius: 5px;
     position: relative;
 
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
     padding: 6px;
     color: rgba(0, 0, 0, 0.8);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 
-    gap: 6px;
+    gap: 8%;
 
     cursor: pointer;
 
@@ -30,12 +30,12 @@
 
     .track__name {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 6px;
+      right: 12px;
 
       font-style: italic;
-      font-size: 1.2rem;
-      font-weight: bold;
+      font-size: 1.3rem;
+      font-weight: bolder;
 
       -webkit-text-stroke: 1px black;
       color: white;
@@ -46,18 +46,38 @@
     }
 
     .track__time {
-      -webkit-text-stroke: 1px black;
-      color: white;
-      font-size: 1.2rem;
-      text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5),
-        -1px -1px 0px rgba(0, 0, 0, 0.5), 1px -1px 0px rgba(0, 0, 0, 0.5),
-        -1px 1px 0px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.4rem;
+
+      font-style: italic;
+
+      .fa-clock {
+        font-size: 1rem;
+      }
     }
 
     img {
       height: 50px;
       flex-basis: 75%;
       border-radius: 5px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .tracks {
+    grid-template-columns: repeat(5, 1fr);
+
+    .track {
+      .track__name {
+        right: 12px;
+      }
     }
   }
 }
