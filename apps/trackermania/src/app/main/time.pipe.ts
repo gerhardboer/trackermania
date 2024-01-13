@@ -1,17 +1,29 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Time } from '../types';
+import { TimeRegistration } from '../types';
+import { formatNumber } from '@angular/common';
 
 @Pipe({
   name: 'time',
   standalone: true,
 })
 export class TimePipe implements PipeTransform {
-  transform(time?: Time) {
+  transform(registration?: TimeRegistration) {
+    if (!registration) {
+      return '-';
+    }
+
+    const time = registration.time;
+
     if (!time) {
       return '-';
     }
 
-    const hPrev = time.h ? `${time.h}h ` : '';
-    return `${hPrev}${time.mm}m ${time.ss}s ${time.SSS}ms`;
+    const hPrev = time.h ? `${time.h}:` : '',
+      mPrev = time.h ? `${time.mm}:` : '';
+
+    const seconds = formatNumber(time.ss, 'en-US', '2.0-0'),
+      milliseconds = formatNumber(time.SSS, 'en-US', '3.0-0');
+
+    return `${hPrev}${mPrev}${seconds}.${milliseconds}`;
   }
 }

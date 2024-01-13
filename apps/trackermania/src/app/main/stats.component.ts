@@ -1,10 +1,10 @@
 import {
-  AfterViewInit,
   Component,
+  computed,
   ElementRef,
   inject,
+  signal,
   ViewChild,
-  WritableSignal,
 } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,9 +12,9 @@ import { StatManagementComponent } from './stat-management.component';
 import { TimePipe } from './time.pipe';
 import { MapNumberPipe } from './map-number.pipe';
 import { Campaign, Time, Track } from '../types';
-import { StatsApi } from '../api/stats.api';
 import { CampaignsComponent } from '../shared/campaigns.component';
 import { TracksComponent } from '../shared/tracks.component';
+import { StatsApi } from '../api/stats.api';
 
 @Component({
   selector: 'trm-stats',
@@ -22,7 +22,12 @@ import { TracksComponent } from '../shared/tracks.component';
     <section class="content">
       <section class="content-title">
         <header>
-          <span></span>
+          <span>
+            @if(selectedCampaign()) {
+            <button (click)="selectedCampaign.set(undefined)"><</button>
+            }
+            {{ title() }}
+          </span>
           <button
             class="button header-button content-title__header-button"
             (click)="addStat()"
@@ -32,19 +37,22 @@ import { TracksComponent } from '../shared/tracks.component';
         </header>
       </section>
       <section class="content-body">
-        @if(!selectedCampaign) {
-        <trm-campaigns
-          (campaignSelected)="selectedCampaign = $event"
-        ></trm-campaigns>
+        @if(selectedCampaign(); as campaign) {
+        <trm-tracks
+          [campaign]="campaign"
+          (selectTrack)="editStat($event)"
+        ></trm-tracks>
         } @else {
-        <trm-tracks [campaign]="selectedCampaign"></trm-tracks>
+        <trm-campaigns
+          (campaignSelected)="selectedCampaign.set($event)"
+        ></trm-campaigns>
         }
       </section>
       <dialog #dialogElement>
         @if(dialogElement.open) {
         <trm-stat-management
-          [campaign]="selectedCampaign"
-          [track]="selectedTrack"
+          [campaign]="selectedCampaign()"
+          [track]="selectedTrack()"
           (saveStat)="saveStat($event)"
           (closeDialog)="dialogElement.close()"
         ></trm-stat-management>
@@ -64,27 +72,25 @@ import { TracksComponent } from '../shared/tracks.component';
     TracksComponent,
   ],
 })
-export class StatsComponent implements AfterViewInit {
-  stats$: WritableSignal<Campaign[]>;
-
-  selectedCampaign: Campaign | undefined;
-  selectedTrack: Track | undefined;
+export class StatsComponent {
+  selectedCampaign = signal<Campaign | undefined>(undefined);
+  selectedTrack = signal<Track | undefined>(undefined);
 
   @ViewChild('dialogElement')
   dialogElement!: ElementRef<HTMLDialogElement>;
 
   private stats = inject(StatsApi);
 
-  constructor() {
-    this.stats$ = this.stats.stats$;
-  }
+  title = computed(() => {
+    const campaign = this.selectedCampaign();
+    if (campaign) {
+      return campaign.name;
+    }
 
-  ngAfterViewInit() {
-    this.dialogElement.nativeElement.addEventListener('close', () => {
-      this.selectedCampaign = undefined;
-      this.selectedTrack = undefined;
-    });
-  }
+    return 'Select campaign';
+  });
+
+  constructor() {}
 
   saveStat(newStat: {
     campaign: Campaign;
@@ -99,9 +105,8 @@ export class StatsComponent implements AfterViewInit {
     this.dialogElement.nativeElement.close();
   }
 
-  editStat(stat: Campaign, track: Track) {
-    this.selectedCampaign = stat;
-    this.selectedTrack = track;
+  editStat(track: Track) {
+    this.selectedTrack.set(track);
     this.dialogElement.nativeElement.showModal();
   }
 

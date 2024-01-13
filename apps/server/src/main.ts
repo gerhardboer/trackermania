@@ -28,8 +28,9 @@ app.get('/campaign', async (req, res) => {
     const maps = await campaign.maps();
 
     cache.campaign[campaign.id] = {
-      campaign: campaign.name,
+      name: campaign.name,
       image: campaign.image,
+      id: campaign.id,
       maps: maps.map((map) => ({
         id: map.id,
         name: map.name,

@@ -31,3 +31,9 @@ export type Time = {
   ss: number;
   SSS: number;
 };
+
+export type TimeRegistration = {
+  date: number;
+  time?: Time;
+  timeInMillis?: number;
+};
