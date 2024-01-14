@@ -79,6 +79,7 @@
         align-items: center;
         overflow: scroll;
         flex-wrap: nowrap;
+        justify-content: unset;
 
         .season {
           min-width: 190px;
