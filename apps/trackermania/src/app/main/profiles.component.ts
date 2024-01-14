@@ -45,7 +45,7 @@ import { ProfileColorDirective } from './profile-color.directive';
           <div class="form-row ">
             <label for="avatar">Avater</label>
             <img
-              src="/assets/avatars/{{ newPlayer.avatar ?? 1 }}.png"
+              src="/assets/avatars/{{ newPlayer.avatar }}.png"
               (click)="nextAvatar(newPlayer)"
             />
           </div>

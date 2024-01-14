@@ -12,7 +12,7 @@ export type Campaign = {
   image: string;
   year: string;
   season: string;
-  tracks: Track[];
+  tracks?: Track[];
 };
 
 export type Track = {

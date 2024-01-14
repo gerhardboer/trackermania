@@ -163,7 +163,7 @@ export class StatDialogComponent {
     this.trackmaniaService
       .getCampaign($event.seasonUid)
       .subscribe((campaign) => {
-        this.tracks$.set(campaign.tracks);
+        this.tracks$.set(campaign.tracks ?? []);
         this.loadingTracks$.set(false);
       });
   }
