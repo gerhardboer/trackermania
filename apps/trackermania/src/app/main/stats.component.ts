@@ -40,7 +40,8 @@ import { StatsApi } from '../api/stats.api';
             class="button header-button content-title__header-button add-stat"
             (click)="addStat()"
           >
-            +<i class="fa-solid fa-stopwatch"></i>
+            <i class="fa-solid fa-plus"> </i>
+            <i class="fa-solid fa-stopwatch"></i>
           </button>
         </header>
       </section>
