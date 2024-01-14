@@ -9,6 +9,7 @@ import { TrackmaniaService } from '../services/trackmania.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Campaign } from '../types';
 import { LoadingComponent } from '../main/loading.component';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'trm-campaigns',
@@ -27,7 +28,7 @@ import { LoadingComponent } from '../main/loading.component';
           @for (season of campaignsByYear.seasons; track season) {
 
           <div class="season" (click)="selectCampaign(season.seasonUid)">
-            <img src="{{ season.image }}" alt="{{ season.name }}" />
+            <img [ngSrc]="season.image" alt="{{ season.name }}" priority fill />
             <span class="season-name">{{ season.name }}</span>
           </div>
           }
@@ -41,7 +42,7 @@ import { LoadingComponent } from '../main/loading.component';
   `,
   styleUrl: './campaigns.component.scss',
   standalone: true,
-  imports: [LoadingComponent],
+  imports: [LoadingComponent, NgOptimizedImage],
 })
 export class CampaignsComponent {
   @Output() campaignSelected = new EventEmitter<Campaign>();

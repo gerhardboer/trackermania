@@ -1,5 +1,5 @@
 import { Component, computed, effect, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { tierColors, tierListDefinition } from './tier-list-definition';
 import { FormsModule } from '@angular/forms';
 import { SeasonComponent } from './season.component';
@@ -13,7 +13,7 @@ interface Tier {
 @Component({
   selector: 'trm-tier-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, SeasonComponent],
+  imports: [CommonModule, FormsModule, SeasonComponent, NgOptimizedImage],
   template: `
     @if(!this.campaign()) {
     <trm-season (campaignSelected)="setCampaign($event)"></trm-season>
@@ -42,7 +42,8 @@ interface Tier {
               <img
                 [id]="map.uid"
                 [attr.tier]="tier.level"
-                [src]="map?.thumbnail"
+                [ngSrc]="map?.thumbnail"
+                priority
                 draggable="true"
                 height="100"
                 (dragstart)="drag($event)"
@@ -58,8 +59,9 @@ interface Tier {
           <div class="tier-option">
             <img
               [id]="map.uid"
-              [src]="map.thumbnailUrl"
-              height="100"
+              [ngSrc]="map.thumbnailUrl"
+              priority
+              fill
               draggable="true"
               (dragstart)="drag($event)"
             />
