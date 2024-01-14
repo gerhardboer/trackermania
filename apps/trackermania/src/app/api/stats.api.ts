@@ -10,9 +10,11 @@ import { Campaign, Time, TimeRegistration, Track } from '../types';
 import { UserApi } from './user-api.service';
 
 export type Stats = {
-  [key: string]: {
-    [key: string]: TimeRegistration[];
-  };
+  [key: string]:
+    | {
+        [key: string]: TimeRegistration[];
+      }
+    | undefined;
 };
 
 @Injectable({
