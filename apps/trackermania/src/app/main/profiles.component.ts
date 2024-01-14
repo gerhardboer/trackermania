@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { TimePipe } from './time.pipe';
+import { TimePipe } from '../shared/utils/time.pipe';
 import { FormsModule } from '@angular/forms';
 import { ProfileColorDirective } from './profile-color.directive';
 

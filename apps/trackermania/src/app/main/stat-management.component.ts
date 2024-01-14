@@ -9,7 +9,7 @@ import {
 import { TrackmaniaService } from '../services/trackmania.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { MapNumberPipe } from './map-number.pipe';
+import { MapNumberPipe } from '../shared/utils/map-number.pipe';
 import { Campaign, Time, Track } from '../types';
 import { LoadingComponent } from './loading.component';
 

@@ -7,11 +7,11 @@ import {
   Output,
 } from '@angular/core';
 import { Campaign, Track } from '../types';
-import { TimePipe } from '../main/time.pipe';
-import { MapNumberPipe } from '../main/map-number.pipe';
+import { TimePipe } from './utils/time.pipe';
+import { MapNumberPipe } from './utils/map-number.pipe';
 import { StatsApi } from '../api/stats.api';
 import { JsonPipe } from '@angular/common';
-import { FastestTimePipe } from '../main/fastest-time.pipe';
+import { FastestTimePipe } from './utils/fastest-time.pipe';
 
 @Component({
   selector: 'trm-tracks',

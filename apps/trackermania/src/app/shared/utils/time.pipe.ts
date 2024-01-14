@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { TimeRegistration } from '../types';
+import { TimeRegistration } from '../../types';
 import { formatNumber } from '@angular/common';
 
 @Pipe({

@@ -9,8 +9,8 @@ import {
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StatManagementComponent } from './stat-management.component';
-import { TimePipe } from './time.pipe';
-import { MapNumberPipe } from './map-number.pipe';
+import { TimePipe } from '../shared/utils/time.pipe';
+import { MapNumberPipe } from '../shared/utils/map-number.pipe';
 import { Campaign, Time, Track } from '../types';
 import { CampaignsComponent } from '../shared/campaigns.component';
 import { TracksComponent } from '../shared/tracks.component';
