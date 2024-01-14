@@ -1,10 +1,16 @@
 <div class="app" [class.public]="!isLoggedIn()">
   @if (isLoggedIn()) {
   <nav>
-    <!--    <a routerLink="/players" routerLinkActive="active">Players</a>-->
-    <!--    <a routerLink="/tier-list" routerLinkActive="active">TierLists</a>-->
-    <a routerLink="/stats" routerLinkActive="active">stats</a>
-    <!--    <a routerLink="/game-session" routerLinkActive="active">Game Sessions</a>-->
+    <div class="menu">
+      <!--    <a routerLink="/players" routerLinkActive="active">Players</a>-->
+      <!--    <a routerLink="/tier-list" routerLinkActive="active">TierLists</a>-->
+      <a routerLink="/stats" routerLinkActive="active">stats</a>
+      <!--    <a routerLink="/game-session" routerLinkActive="active">Game Sessions</a>-->
+    </div>
+
+    <button class="button nav-button logout" (click)="authenticate.logout()">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    </button>
   </nav>
   }
 

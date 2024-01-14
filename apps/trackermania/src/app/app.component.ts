@@ -11,7 +11,7 @@ import { LoginComponent } from './login.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  private authenticate = inject(AuthenticateService);
+  authenticate = inject(AuthenticateService);
 
   isLoggedIn = this.authenticate.loggedIn;
 

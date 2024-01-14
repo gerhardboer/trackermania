@@ -1,3 +1,6 @@
-.dialog__body .form-row {
+.dialog .dialog__content .dialog__body {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
   justify-content: center;
 }

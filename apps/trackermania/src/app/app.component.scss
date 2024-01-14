@@ -27,26 +27,44 @@ nav {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0rem 1rem;
   color: #fff;
   min-height: 75px;
-  width: 60%;
+  width: 90vw;
   margin: auto;
-  justify-content: center;
+  justify-content: space-between;
 
-  a {
-    font-size: 1.5rem;
-    font-weight: bold;
-    font-style: italic;
-    text-transform: uppercase;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
-    position: relative;
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    margin-left: 40px; // add margin matching logout button, so menu items are centered
+    a {
+      font-size: 1.5rem;
+      font-weight: bold;
+      font-style: italic;
+      text-transform: uppercase;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      position: relative;
+    }
+
+    a.active {
+      color: rgba(255, 255, 255, 0.9);
+    }
   }
 
-  a.active {
-    color: rgba(255, 255, 255, 0.9);
+  .nav-button {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+
+    &.logout {
+      width: 40px;
+    }
   }
 
   .active::before {
