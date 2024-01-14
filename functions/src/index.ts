@@ -1,10 +1,22 @@
 import { onRequest } from 'firebase-functions/v2/https';
 import * as express from 'express';
 import { Request, Response } from 'express';
+import { trackermaniaPassword } from './trackermania-password';
 import { Server } from './server';
 
 const API_PREFIX = 'api';
 const app = express();
+
+let server: Server;
+
+app.use((req, res, next) => {
+  if (!server) {
+    server = new Server();
+    server.setAccessTokens();
+  }
+  next();
+});
+
 // Rewrite Firebase hosting requests: /api/:path => /:path
 app.use((req, res, next) => {
   if (req.url.indexOf(`/${API_PREFIX}/`) === 0) {
@@ -12,9 +24,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
-const server = new Server();
-server.setAccessTokens();
 
 app.get('/campaigns', async (req: Request, res: Response) => {
   const campaigns = await server.getCampaigns();
@@ -29,4 +38,7 @@ app.get('/campaign', async (req: Request, res: Response) => {
   res.send(toSend);
 });
 
-exports.server = onRequest({ region: 'europe-west1', cors: true }, app);
+exports.server = onRequest(
+  { region: 'europe-west1', secrets: [trackermaniaPassword], cors: true },
+  app
+);

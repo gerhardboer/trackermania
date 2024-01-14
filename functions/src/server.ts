@@ -1,3 +1,5 @@
+import { trackermaniaPassword } from './trackermania-password';
+
 export class Server {
   private tokens: { accessToken: string; refreshToken: string } = {
     accessToken: '',
@@ -8,14 +10,15 @@ export class Server {
     const url =
       'https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic';
 
+    const password = trackermaniaPassword.value();
+
     const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({ audience: 'NadeoLiveServices' }),
       headers: {
         'Content-Type': 'application/json',
         Authorization:
-          'Basic ' +
-          Buffer.from('trackermania:Xk;HX5][tG8AC?Ah').toString('base64'),
+          'Basic ' + Buffer.from(`trackermania:${password}`).toString('base64'),
       },
     });
 
