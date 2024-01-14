@@ -25,7 +25,13 @@ h6 {
 body {
   font-family: 'Roboto', sans-serif;
   color: rgba(255, 255, 255, 0.9);
-  background: url('assets/bg.png') no-repeat;
+  background: rgb(0, 125, 168);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 125, 168, 1) 0%,
+    rgba(0, 156, 210, 1) 30%,
+    rgba(19, 203, 104, 1) 100%
+  );
   background-size: 100vw 100vh;
   font-size: 20px;
 }
