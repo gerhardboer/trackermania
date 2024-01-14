@@ -24,7 +24,7 @@ import { Campaign } from '../types';
         <section class="season-container">
           @for (season of campaignsByYear.seasons;track season) {
 
-          <div class="season" (click)="selectCampaign(season.id)">
+          <div class="season" (click)="selectCampaign(season.seasonUid)">
             <img src="{{ season.image }}" alt="{{ season.name }}" />
             <span class="season-name">{{ season.name }}</span>
           </div>
@@ -49,7 +49,7 @@ export class CampaignsComponent {
     return this.transformToCampaignsByYear(campaigns);
   });
 
-  selectCampaign(campaignId: number) {
+  selectCampaign(campaignId: string) {
     this.trackmaniaService
       .getCampaign(campaignId)
       .subscribe((campaign: Campaign) => {

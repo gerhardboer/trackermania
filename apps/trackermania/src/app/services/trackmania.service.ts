@@ -11,7 +11,7 @@ export class TrackmaniaService {
 
   private httpClient = inject(HttpClient);
 
-  getCampaign(id: number): Observable<Campaign> {
+  getCampaign(id: string): Observable<Campaign> {
     return this.httpClient
       .get<TrackmaniaIoCampaign>(this.url + 'campaign', {
         params: { id },

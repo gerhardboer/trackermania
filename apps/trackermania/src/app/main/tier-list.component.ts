@@ -58,7 +58,7 @@ interface Tier {
           <div class="tier-option">
             <img
               [id]="map.uid"
-              [src]="map.thumbnail"
+              [src]="map.thumbnailUrl"
               height="100"
               draggable="true"
               (dragstart)="drag($event)"
@@ -100,7 +100,7 @@ export class TierListComponent {
 
       if (tierList && campaign) {
         localStorage.setItem(
-          `${user}-${campaign.id}`,
+          `${user}-${campaign.seasonUid}`,
           JSON.stringify(tierList)
         );
       }
@@ -172,7 +172,7 @@ export class TierListComponent {
     if (!this.campaign()) return;
     const user = localStorage.getItem('user')!;
     const storedTierList = localStorage.getItem(
-      `${user}-${this.campaign().id}`
+      `${user}-${this.campaign().seasonUid}`
     );
 
     this.tierList.set(

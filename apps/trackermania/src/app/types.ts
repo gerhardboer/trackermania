@@ -3,7 +3,7 @@ export type TrackmaniaIoCampaign = Campaign & {
 };
 
 export type Campaign = {
-  id: number;
+  seasonUid: string;
   name: string;
   image: string;
   year: string;
@@ -12,14 +12,13 @@ export type Campaign = {
 };
 
 export type Track = {
-  id: number;
+  uid: string;
   name: string;
   author: string;
   url: string;
-  thumbnail: string;
+  thumbnailUrl: string;
   uploaded: string;
   storageId: string;
-  uid: string;
   fileName: string;
   submitterName: string;
   time?: Time;

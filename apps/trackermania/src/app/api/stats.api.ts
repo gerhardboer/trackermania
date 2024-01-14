@@ -48,7 +48,8 @@ export class StatsApi {
       timeInMillis,
     };
 
-    const currentStats = this.stats$()[stat.campaign.id]?.[stat.track.id];
+    const currentStats =
+      this.stats$()[stat.campaign.seasonUid]?.[stat.track.uid];
 
     if (currentStats) {
       currentStats.push(newStat);
@@ -57,8 +58,8 @@ export class StatsApi {
     setDoc(
       doc(this.statsCollection, `${this.userId}`),
       {
-        [stat.campaign.id]: {
-          [stat.track.id]: currentStats ?? [newStat],
+        [stat.campaign.seasonUid]: {
+          [stat.track.uid]: currentStats ?? [newStat],
         },
       },
       { merge: true }

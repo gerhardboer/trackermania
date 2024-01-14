@@ -20,11 +20,11 @@ import { FastestTimePipe } from '../main/fastest-time.pipe';
       @for (track of campaign?.tracks; track track) {
       <div class="track" (click)="selectTrack.emit(track)">
         <div class="track__name">{{ track.name | trmMapNumber }}</div>
-        <img [src]="track.thumbnail" alt="{{ track.name }}" />
+        <img [src]="track.thumbnailUrl" alt="{{ track.name }}" />
 
         <div class="track__time">
           <i class="fa-regular fa-clock"></i>
-          {{ stats$()[campaign.id]?.[track.id] | fastestTime | time }}
+          {{ stats$()[campaign.seasonUid]?.[track.uid] | fastestTime | time }}
         </div>
       </div>
       }

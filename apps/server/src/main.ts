@@ -1,7 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import { Client } from 'trackmania.io';
-import { writeFileSync } from 'fs';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -9,70 +7,103 @@ const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 const app = express();
 app.use(cors());
 
-const client = new Client();
+let tokens;
 
-let cache: any = {};
+async function setAccessTokens() {
+  const url =
+    'https://prod.trackmania.core.nadeo.online/v2/authentication/token/basic';
 
-app.get('/clear-cache', async (req, res) => {
-  cache = {};
+  const response = await fetch(url, {
+    method: 'POST',
+    body: JSON.stringify({ audience: 'NadeoLiveServices' }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization:
+        'Basic ' +
+        Buffer.from('trackermania:Xk;HX5][tG8AC?Ah').toString('base64'),
+    },
+  });
+
+  const json = await response.json();
+  tokens = json;
+}
+
+// async function refreshToken() {
+//   const url =
+//     'https://prod.trackmania.core.nadeo.online/v2/authentication/token/refresh';
+//
+//   const response = await fetch(url, {
+//     method: 'POST',
+//     body: JSON.stringify({ audience: 'NadeoLiveServices' }),
+//     headers: {
+//       'Content-Type': 'application/json',
+//       Authorization: `nadeo_v1 t=${tokens.refreshToken}`,
+//     },
+//   });
+//
+//   const json = await response.json();
+//   tokens = json;
+// }
+
+app.get('/nl-refresh', async (req, res) => {});
+
+async function getMaps(maps: any[]) {
+  const mapUids = maps.map((map) => map.mapUid).join(',');
+  const mapsUrl = `https://live-services.trackmania.nadeo.live/api/token/map/get-multiple?mapUidList=${mapUids}`;
+
+  const response = await fetch(mapsUrl, {
+    method: 'GET',
+    headers: {
+      Authorization: `nadeo_v1 t=${tokens.accessToken}`,
+    },
+  });
+  const json = await response.json();
+
+  return json;
+}
+
+async function singleCampaignWithMaps(queriedId, campaigns) {
+  const campaign = campaigns.find((c) => c.seasonUid === queriedId);
+  console.log(campaign);
+
+  const maps = (await getMaps(campaign.playlist)).mapList;
+
+  return {
+    ...campaign,
+    maps,
+  };
+}
+
+async function getCampaigns() {
+  const url =
+    'https://live-services.trackmania.nadeo.live/api/token/campaign/official?offset=0&length=100';
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `nadeo_v1 t=${tokens.accessToken}`,
+    },
+  });
+  return (await response.json()).campaignList;
+}
+
+app.get('/campaigns', async (req, res) => {
+  const campaigns = await getCampaigns();
+
+  res.send(campaigns);
 });
 
 app.get('/campaign', async (req, res) => {
+  const campaigns = await getCampaigns();
+
   const queriedId = req.query.id as string;
-  const campaign = queriedId
-    ? await client.campaigns.get(0, parseInt(queriedId))
-    : await client.campaigns.currentSeason();
-
-  if (!cache.campaign) cache.campaign = {};
-  if (!cache.campaign[campaign.id]) {
-    const maps = await campaign.maps();
-
-    cache.campaign[campaign.id] = {
-      name: campaign.name,
-      image: campaign.image,
-      id: campaign.id,
-      maps: maps.map((map) => ({
-        id: map.id,
-        name: map.name,
-        author: map.authorName,
-        url: map.url,
-        thumbnail: map.thumbnail,
-        environment: map.environment,
-        uploaded: map.uploaded,
-        storageId: map.storageId,
-        uid: map.uid,
-        fileName: map.fileName,
-        submitterName: map.submitterName,
-        submitter: map.submitter,
-      })),
-    };
-
-    writeFileSync('./cache.json', JSON.stringify(cache));
-  }
-
-  res.send(cache.campaign[campaign.id]);
+  console.log(queriedId);
+  const toSend = await singleCampaignWithMaps(queriedId, campaigns);
+  console.log(toSend);
+  res.send(toSend);
 });
 
-app.get('/campaigns', async (req, res) => {
-  if (!cache.campaigns) {
-    const campaigns = await client.campaigns.officialCampaigns();
-    const response = [];
-    for (const campaign of campaigns) {
-      response.push({
-        name: campaign.name,
-        id: campaign.id,
-        image: (await campaign.getCampaign()).image,
-      });
-    }
-
-    cache.campaigns = response;
-
-    writeFileSync('./cache.json', JSON.stringify(cache));
-  }
-
-  res.send(cache.campaigns);
-});
-
-app.listen(port, host, () => {
+app.listen(port, host, async () => {
+  await setAccessTokens();
   console.log(`[ ready ] http://${host}:${port}`);
 });

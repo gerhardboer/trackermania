@@ -141,6 +141,11 @@ export class StatManagementComponent {
   SSS = '';
 
   ngOnChanges() {
+    if (this.campaign) {
+      this.selectedCampaign = this.campaign;
+      this.getTracks(this.selectedCampaign);
+    }
+
     if (this.track?.time) {
       this.hh = this.track?.time.h.toString();
       this.mm = this.track?.time.mm.toString();
@@ -152,10 +157,12 @@ export class StatManagementComponent {
   getTracks($event: Campaign) {
     this.tracks$.set([]);
     this.loadingTracks$.set(true);
-    this.trackmaniaService.getCampaign($event.id).subscribe((campaign) => {
-      this.tracks$.set(campaign.tracks);
-      this.loadingTracks$.set(false);
-    });
+    this.trackmaniaService
+      .getCampaign($event.seasonUid)
+      .subscribe((campaign) => {
+        this.tracks$.set(campaign.tracks);
+        this.loadingTracks$.set(false);
+      });
   }
 
   saveTime() {
