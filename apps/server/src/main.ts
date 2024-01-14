@@ -24,8 +24,7 @@ async function setAccessTokens() {
     },
   });
 
-  const json = await response.json();
-  tokens = json;
+  tokens = await response.json();
 }
 
 // async function refreshToken() {
@@ -45,8 +44,6 @@ async function setAccessTokens() {
 //   tokens = json;
 // }
 
-app.get('/nl-refresh', async (req, res) => {});
-
 async function getMaps(maps: any[]) {
   const mapUids = maps.map((map) => map.mapUid).join(',');
   const mapsUrl = `https://live-services.trackmania.nadeo.live/api/token/map/get-multiple?mapUidList=${mapUids}`;
@@ -57,14 +54,11 @@ async function getMaps(maps: any[]) {
       Authorization: `nadeo_v1 t=${tokens.accessToken}`,
     },
   });
-  const json = await response.json();
-
-  return json;
+  return await response.json();
 }
 
 async function singleCampaignWithMaps(queriedId, campaigns) {
   const campaign = campaigns.find((c) => c.seasonUid === queriedId);
-  console.log(campaign);
 
   const maps = (await getMaps(campaign.playlist)).mapList;
 
@@ -97,9 +91,7 @@ app.get('/campaign', async (req, res) => {
   const campaigns = await getCampaigns();
 
   const queriedId = req.query.id as string;
-  console.log(queriedId);
   const toSend = await singleCampaignWithMaps(queriedId, campaigns);
-  console.log(toSend);
   res.send(toSend);
 });
 
