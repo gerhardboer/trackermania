@@ -6,6 +6,8 @@ import { firebaseConfig } from '../firebase.config';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { API_URL } from './types';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,9 +15,12 @@ export const appConfig: ApplicationConfig = {
       provideFirebaseApp(() => initializeApp(firebaseConfig)),
       provideFirestore(() => getFirestore()),
       provideAuth(() => getAuth()),
-      // FirebaseUIModule.forRoot(firebaseUiAuthConfig),
     ]),
     provideRouter(appRoutes, withViewTransitions()),
     provideHttpClient(),
+    {
+      provide: API_URL,
+      useValue: environment.apiUrl,
+    },
   ],
 };

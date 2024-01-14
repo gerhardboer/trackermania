@@ -1,15 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Campaign, TrackmaniaIoCampaign } from '../types';
+import { API_URL, Campaign, TrackmaniaIoCampaign } from '../types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrackmaniaService {
-  private url = 'http://localhost:3000/';
-
   private httpClient = inject(HttpClient);
+  private url = inject(API_URL);
 
   getCampaign(id: string): Observable<Campaign> {
     return this.httpClient

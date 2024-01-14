@@ -1,3 +1,7 @@
+import { InjectionToken } from '@angular/core';
+
+export const API_URL = new InjectionToken('apiUrl');
+
 export type TrackmaniaIoCampaign = Campaign & {
   maps: Track[];
 };
