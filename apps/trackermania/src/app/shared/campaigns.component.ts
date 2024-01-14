@@ -8,12 +8,14 @@ import {
 import { TrackmaniaService } from '../services/trackmania.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Campaign } from '../types';
+import { LoadingComponent } from '../main/loading.component';
 
 @Component({
   selector: 'trm-campaigns',
   template: `
+    @if (campaignsByYear()) {
     <section class="campaigns">
-      @for (campaignsByYear of campaignsByYear();track campaignsByYear.year) {
+      @for (campaignsByYear of campaignsByYear(); track campaignsByYear.year) {
       <section class="campaign-row">
         <section class="year-container">
           <div class="year">
@@ -22,7 +24,7 @@ import { Campaign } from '../types';
         </section>
 
         <section class="season-container">
-          @for (season of campaignsByYear.seasons;track season) {
+          @for (season of campaignsByYear.seasons; track season) {
 
           <div class="season" (click)="selectCampaign(season.seasonUid)">
             <img src="{{ season.image }}" alt="{{ season.name }}" />
@@ -33,9 +35,13 @@ import { Campaign } from '../types';
       </section>
       }
     </section>
+    } @else {
+    <trm-loading />
+    }
   `,
   styleUrl: './campaigns.component.scss',
   standalone: true,
+  imports: [LoadingComponent],
 })
 export class CampaignsComponent {
   @Output() campaignSelected = new EventEmitter<Campaign>();

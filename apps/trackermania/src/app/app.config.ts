@@ -1,5 +1,9 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter, withViewTransitions } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withViewTransitions,
+} from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { firebaseConfig } from '../firebase.config';
@@ -16,7 +20,11 @@ export const appConfig: ApplicationConfig = {
       provideFirestore(() => getFirestore()),
       provideAuth(() => getAuth()),
     ]),
-    provideRouter(appRoutes, withViewTransitions()),
+    provideRouter(
+      appRoutes,
+      withViewTransitions(),
+      withComponentInputBinding()
+    ),
     provideHttpClient(),
     {
       provide: API_URL,

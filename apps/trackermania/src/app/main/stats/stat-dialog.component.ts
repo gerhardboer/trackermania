@@ -6,15 +6,15 @@ import {
   Output,
   signal,
 } from '@angular/core';
-import { TrackmaniaService } from '../services/trackmania.service';
+import { TrackmaniaService } from '../../services/trackmania.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { MapNumberPipe } from '../shared/utils/map-number.pipe';
-import { Campaign, Time, Track } from '../types';
-import { LoadingComponent } from './loading.component';
+import { MapNumberPipe } from '../../shared/utils/map-number.pipe';
+import { Campaign, Time, Track } from '../../types';
+import { LoadingComponent } from '../loading.component';
 
 @Component({
-  selector: 'trm-stat-management',
+  selector: 'trm-stat-dialog',
   template: `
     <section class="dialog__content">
       <header>
@@ -113,9 +113,9 @@ import { LoadingComponent } from './loading.component';
   `,
   standalone: true,
   imports: [FormsModule, MapNumberPipe, LoadingComponent],
-  styleUrl: './stat-management.component.scss',
+  styleUrl: './stat-dialog.component.scss',
 })
-export class StatManagementComponent {
+export class StatDialogComponent {
   @Input() campaign: Campaign | undefined;
   @Input() track: Track | undefined;
 
@@ -143,7 +143,10 @@ export class StatManagementComponent {
   ngOnChanges() {
     if (this.campaign) {
       this.selectedCampaign = this.campaign;
-      this.getTracks(this.selectedCampaign);
+
+      if (!this.track) {
+        this.getTracks(this.selectedCampaign);
+      }
     }
 
     if (this.track?.time) {

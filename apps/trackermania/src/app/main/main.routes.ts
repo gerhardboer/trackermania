@@ -8,8 +8,8 @@ export const mainRoutes: Route[] = [
   },
   {
     path: 'stats',
-    loadComponent: () =>
-      import('./stats.component').then((m) => m.StatsComponent),
+    loadChildren: () =>
+      import('./stats/stats.routes').then((m) => m.statsRoutes),
   },
   {
     path: 'players',
