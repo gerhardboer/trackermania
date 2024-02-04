@@ -56,7 +56,7 @@ export class CampaignsComponent {
   campaignsByYear = computed<{ year: string; seasons: Campaign[] }[]>(() => {
     const campaigns = this.campaigns();
     if (!campaigns) return [];
-    return []; //this.transformToCampaignsByYear(campaigns);
+    return this.transformToCampaignsByYear(campaigns);
   });
 
   selectCampaign(campaignId: string) {
