@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'trm-loading',
-  template: ` <div class="loading-spinner"></div> `,
+  template: `
+    <div class="loading-spinner" [style]="'font-size: ' + size + 'rem'"></div>
+  `,
   styles: `
     .loading-spinner {  
   /*  control spinner size with setting font-size  */
@@ -28,4 +30,22 @@ import { Component } from '@angular/core';
     `,
   standalone: true,
 })
-export class LoadingComponent {}
+export class LoadingComponent {
+  @Input({
+    transform: (input: string) => {
+      switch (input) {
+        case 'large':
+          return '2';
+        case 'small':
+        default:
+          return '0.6';
+      }
+    },
+  })
+  /**
+   * Size of the spinner
+   * @default 'small'
+   * @type 'small' | 'large'*
+   */
+  size: string = '';
+}

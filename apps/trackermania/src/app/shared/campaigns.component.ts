@@ -14,7 +14,11 @@ import { NgOptimizedImage } from '@angular/common';
 @Component({
   selector: 'trm-campaigns',
   template: `
-    @if (campaignsByYear()) {
+    @if (loading()) {
+    <section class="loading">
+      <trm-loading size="large" />
+    </section>
+    } @else {
     <section class="campaigns">
       @for (campaignsByYear of campaignsByYear(); track campaignsByYear.year) {
       <section class="campaign-row">
@@ -36,8 +40,6 @@ import { NgOptimizedImage } from '@angular/common';
       </section>
       }
     </section>
-    } @else {
-    <trm-loading />
     }
   `,
   styleUrl: './campaigns.component.scss',
@@ -49,11 +51,12 @@ export class CampaignsComponent {
 
   trackmaniaService = inject(TrackmaniaService);
   campaigns = toSignal(this.trackmaniaService.getCampaigns());
+  loading = computed(() => !this.campaigns()?.length);
 
   campaignsByYear = computed<{ year: string; seasons: Campaign[] }[]>(() => {
     const campaigns = this.campaigns();
     if (!campaigns) return [];
-    return this.transformToCampaignsByYear(campaigns);
+    return []; //this.transformToCampaignsByYear(campaigns);
   });
 
   selectCampaign(campaignId: string) {
