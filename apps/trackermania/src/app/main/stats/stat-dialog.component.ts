@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { MapNumberPipe } from '../../shared/utils/map-number.pipe';
 import { Campaign, Time, Track } from '../../types';
 import { LoadingComponent } from '../loading.component';
+import { TimeControlDirective } from '../../shared/utils/time-control.directive';
 
 @Component({
   selector: 'trm-stat-dialog',
@@ -67,35 +68,11 @@ import { LoadingComponent } from '../loading.component';
           <label for="time">Time</label>
           <div class="time-input">
             <input
+              trmTimeControl
               type="text"
               inputmode="numeric"
-              pattern="\\d*"
-              placeholder="h"
-              [(ngModel)]="hh"
-            />
-            :
-            <input
-              type="text"
-              inputmode="numeric"
-              pattern="\\d*"
-              placeholder="m"
-              [(ngModel)]="mm"
-            />
-            :
-            <input
-              type="text"
-              inputmode="numeric"
-              pattern="\\d*"
-              placeholder="s"
-              [(ngModel)]="ss"
-            />
-            .
-            <input
-              type="text"
-              inputmode="numeric"
-              pattern="\\d*"
-              placeholder="ms"
-              [(ngModel)]="SSS"
+              placeholder="hh.mm.ss.SSS"
+              [(ngModel)]="time"
             />
           </div>
         </div>
@@ -112,7 +89,7 @@ import { LoadingComponent } from '../loading.component';
     </section>
   `,
   standalone: true,
-  imports: [FormsModule, MapNumberPipe, LoadingComponent],
+  imports: [FormsModule, MapNumberPipe, LoadingComponent, TimeControlDirective],
   styleUrl: './stat-dialog.component.scss',
 })
 export class StatDialogComponent {
@@ -135,10 +112,7 @@ export class StatDialogComponent {
   selectedCampaign: Campaign | null = null;
 
   selectedTrack: Track | null = null;
-  hh = '';
-  mm = '';
-  ss = '';
-  SSS = '';
+  time: Time | undefined;
 
   ngOnChanges() {
     if (this.campaign) {
@@ -150,10 +124,7 @@ export class StatDialogComponent {
     }
 
     if (this.track?.time) {
-      this.hh = this.track?.time.h.toString();
-      this.mm = this.track?.time.mm.toString();
-      this.ss = this.track?.time.ss.toString();
-      this.SSS = this.track?.time.SSS.toString();
+      this.time = this.track?.time;
     }
   }
 
@@ -171,26 +142,18 @@ export class StatDialogComponent {
   saveTime() {
     const campaign = this.campaign ?? this.selectedCampaign;
     const track = this.track ?? this.selectedTrack;
-    const hasTime = this.hh || this.mm || this.ss || this.SSS;
+    const hasTime = this.time;
 
     if (campaign && track && hasTime) {
       this.saveStat.emit({
         campaign,
         track,
-        time: {
-          h: this.hh ? parseInt(this.hh) : 0,
-          mm: this.mm ? parseInt(this.mm) : 0,
-          ss: this.ss ? parseInt(this.ss) : 0,
-          SSS: this.SSS ? parseInt(this.SSS) : 0,
-        },
+        time: this.time,
       });
 
       this.selectedTrack = null;
       this.selectedCampaign = null;
-      this.hh = '';
-      this.mm = '';
-      this.ss = '';
-      this.SSS = '';
+      this.time = undefined;
     }
   }
 
@@ -203,10 +166,7 @@ export class StatDialogComponent {
       });
       this.selectedTrack = null;
       this.selectedCampaign = null;
-      this.hh = '';
-      this.mm = '';
-      this.ss = '';
-      this.SSS = '';
+      this.time = undefined;
     }
   }
 }

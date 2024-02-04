@@ -1,24 +1,17 @@
-import {
-  Component,
-  computed,
-  EventEmitter,
-  inject,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Campaign, Track } from '../types';
 import { TimePipe } from './utils/time.pipe';
 import { MapNumberPipe } from './utils/map-number.pipe';
 import { StatsApi } from '../api/stats.api';
 import { JsonPipe, NgOptimizedImage } from '@angular/common';
-import { FastestTimePipe } from './utils/fastest-time.pipe';
+import { fastestTime, FastestTimePipe } from './utils/fastest-time.pipe';
 
 @Component({
   selector: 'trm-tracks',
   template: `
     <section class="tracks">
       @for (track of campaign.tracks; track track) {
-      <div class="track" (click)="selectTrack.emit(track)">
+      <div class="track" (click)="showTrack(track, campaign)">
         <div class="track__cover">
           <img
             [ngSrc]="track.thumbnailUrl"
@@ -56,4 +49,14 @@ export class TracksComponent {
   stats$ = this.stats.stats$;
 
   constructor() {}
+
+  showTrack(track: Track, campaign: Campaign) {
+    const timeRegistration = fastestTime(
+      this.stats$()[campaign.seasonUid]?.[track.uid]
+    );
+    this.selectTrack.emit({
+      ...track,
+      time: timeRegistration?.time,
+    });
+  }
 }
