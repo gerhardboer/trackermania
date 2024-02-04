@@ -16,7 +16,6 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/trackermania/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-
         "assets": [
           "apps/trackermania/src/favicon.ico",
           "apps/trackermania/src/assets"
@@ -80,13 +79,7 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "apps/trackermania/src/**/*.ts",
-          "apps/trackermania/src/**/*.html"
-        ]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
